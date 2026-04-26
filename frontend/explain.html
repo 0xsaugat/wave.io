@@ -157,26 +157,26 @@
         }
     </style>
 </head>
-<body class="bg-background text-on-background min-h-screen flex flex-col antialiased selection:bg-surface-container-high selection:text-on-background pb-[80px]">
-<!-- TopAppBar -->
-<header class="flex justify-between items-center w-full px-8 h-16 bg-[#f9faf7] dark:bg-[#00261d] font-mono uppercase tracking-widest text-[11px] docked full-width top-0 border-b z-50 border-b border-black/5 dark:border-white/10 flat no shadows text-[#0d3d31] dark:text-[#f9faf7] flex-shrink-0">
+<body class="bg-background text-on-background min-h-screen flex flex-col antialiased selection:bg-surface-container-high selection:text-on-background pb-[80px] pt-16">
+<!-- Consistent Navigation Bar -->
+<header class="fixed top-0 w-full bg-[#f9faf7] dark:bg-[#00261d] z-50 border-b border-black/5 dark:border-white/10">
+<div class="flex justify-between items-center px-8 h-16">
 <div class="font-serif font-bold text-xl text-[#0d3d31] dark:text-white">wave.io</div>
-<nav class="hidden md:flex items-center gap-8 h-full">
-<a class="text-stone-500 hover:text-[#0d3d31] transition-colors h-full flex items-center hover:bg-stone-100 dark:hover:bg-white/5 px-4" href="/static/landing.html">Home</a>
-<a class="text-stone-500 hover:text-[#0d3d31] transition-colors h-full flex items-center hover:bg-stone-100 dark:hover:bg-white/5 px-4" href="/">Workspace</a>
-<a class="text-stone-500 hover:text-[#0d3d31] transition-colors h-full flex items-center hover:bg-stone-100 dark:hover:bg-white/5 px-4" href="/static/scenarios.html">Scenarios</a>
-<a class="text-stone-500 hover:text-[#0d3d31] transition-colors h-full flex items-center hover:bg-stone-100 dark:hover:bg-white/5 px-4" href="/static/earthquake.html">Earthquake</a>
-<a class="text-stone-500 hover:text-[#0d3d31] transition-colors h-full flex items-center hover:bg-stone-100 dark:hover:bg-white/5 px-4" href="/static/validation.html">Validation</a>
-<a class="text-[#0d3d31] dark:text-white border-b border-[#0d3d31] pb-1 h-full flex items-center hover:bg-stone-100 dark:hover:bg-white/5 px-4 opacity-80 transition-all" href="/static/explain.html">Explain</a>
-<a class="text-stone-500 hover:text-[#0d3d31] transition-colors h-full flex items-center hover:bg-stone-100 dark:hover:bg-white/5 px-4" href="/static/about.html">About</a>
+<nav class="hidden md:flex items-center gap-2">
+<a class="font-mono uppercase tracking-widest text-[11px] text-stone-500 hover:text-[#0d3d31] dark:hover:text-white transition-colors hover:bg-stone-100 dark:hover:bg-white/5 px-3 py-2 rounded" href="/static/landing.html">Home</a>
+<a class="font-mono uppercase tracking-widest text-[11px] text-stone-500 hover:text-[#0d3d31] dark:hover:text-white transition-colors hover:bg-stone-100 dark:hover:bg-white/5 px-3 py-2 rounded" href="/static//">Workspace</a>
+<a class="font-mono uppercase tracking-widest text-[11px] text-stone-500 hover:text-[#0d3d31] dark:hover:text-white transition-colors hover:bg-stone-100 dark:hover:bg-white/5 px-3 py-2 rounded" href="/static/scenarios.html">Scenarios</a>
+<a class="font-mono uppercase tracking-widest text-[11px] text-stone-500 hover:text-[#0d3d31] dark:hover:text-white transition-colors hover:bg-stone-100 dark:hover:bg-white/5 px-3 py-2 rounded" href="/static/earthquake.html">Earthquake</a>
+<a class="font-mono uppercase tracking-widest text-[11px] text-stone-500 hover:text-[#0d3d31] dark:hover:text-white transition-colors hover:bg-stone-100 dark:hover:bg-white/5 px-3 py-2 rounded" href="/static/validation.html">Validation</a>
+<a class="font-mono uppercase tracking-widest text-[11px] text-[#0d3d31] dark:text-white border-b-2 border-[#0d3d31] px-3 py-2 rounded" href="/static/explain.html">Explain</a>
+<a class="font-mono uppercase tracking-widest text-[11px] text-stone-500 hover:text-[#0d3d31] dark:hover:text-white transition-colors hover:bg-stone-100 dark:hover:bg-white/5 px-3 py-2 rounded" href="/static/about.html">About</a>
 </nav>
 <div class="flex items-center gap-4">
-<button class="hidden md:flex items-center gap-2 ghost-border px-4 py-2 font-ui-label text-ui-label hover:bg-surface-container-high transition-colors" onclick="window.location.href='/'">
-                Launch Demo
-            </button>
-<button class="flex items-center justify-center w-8 h-8 hover:bg-stone-100 dark:hover:bg-white/5 rounded-DEFAULT transition-colors">
+<button class="hidden md:inline-block bg-[#00261d] hover:bg-[#00261d]/90 text-[#ffffff] px-4 py-2 font-mono uppercase tracking-widest text-[11px] rounded transition-colors" onclick="window.location.href='/'">Launch Demo</button>
+<button class="text-stone-500 hover:text-[#0d3d31] dark:hover:text-white transition-colors p-2 rounded hover:bg-stone-100 dark:hover:bg-white/5">
 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">code</span>
 </button>
+</div>
 </div>
 </header>
 <!-- Main Content Area -->
