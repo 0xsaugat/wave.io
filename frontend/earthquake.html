@@ -1,0 +1,1950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PhysicsNet Earthquake Simulation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f0e7;
+  --panel: rgba(255, 251, 245, 0.92);
+  --panel-strong: #fffdf8;
+  --soft: #ede2d4;
+  --line: rgba(20, 25, 23, 0.08);
+  --text: #1a1f1d;
+  --muted: #626866;
+  --primary: #183730;
+  --primary-strong: #0d241f;
+  --accent: #b15434;
+  --accent-soft: #f3c3ae;
+  --p-wave: #5ab9ff;
+  --s-wave: #ff9d4d;
+  --safe: #386f58;
+  --warn: #c98e24;
+  --risk: #ab3322;
+  --shadow: 0 18px 40px rgba(18, 28, 24, 0.08);
+  --mono: "DM Mono", monospace;
+  --serif: "DM Serif Display", serif;
+  --sans: "Inter", sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background:
+    radial-gradient(circle at top left, rgba(243, 195, 174, 0.46), transparent 22%),
+    radial-gradient(circle at 82% 10%, rgba(24, 55, 48, 0.12), transparent 22%),
+    linear-gradient(180deg, #f8f3eb 0%, var(--bg) 100%);
+  color: var(--text);
+  font-family: var(--sans);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(24, 55, 48, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(24, 55, 48, 0.05) 1px, transparent 1px);
+  background-size: 28px 28px;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 12px 24px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(248, 243, 235, 0.9);
+  backdrop-filter: blur(12px);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.brand-mark {
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  color: var(--primary);
+}
+
+.brand-nav {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.brand-nav a {
+  text-decoration: none;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.brand-nav a.active {
+  color: var(--primary);
+  border-bottom: 1px solid var(--primary);
+  padding-bottom: 2px;
+}
+
+.launch-btn,
+.primary-btn,
+.ghost-btn,
+.preset-btn,
+.mode-btn,
+.view-btn {
+  border: 0;
+  cursor: pointer;
+  transition: transform 0.18s ease, opacity 0.18s ease, background-color 0.18s ease, color 0.18s ease;
+}
+
+.launch-btn,
+.primary-btn {
+  min-height: 42px;
+  padding: 0 16px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+  color: #fff;
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.ghost-btn {
+  min-height: 38px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--primary);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.launch-btn:hover,
+.primary-btn:hover,
+.ghost-btn:hover,
+.preset-btn:hover,
+.mode-btn:hover,
+.view-btn:hover {
+  transform: translateY(-1px);
+}
+
+.shell {
+  display: grid;
+  grid-template-columns: 290px minmax(0, 1fr) 320px;
+  gap: 18px;
+  padding: 18px;
+  flex: 1;
+  min-height: 0;
+}
+
+.panel {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(14px);
+  min-height: 0;
+}
+
+.panel-scroll {
+  height: calc(100vh - 112px);
+  overflow-y: auto;
+}
+
+.panel-inner {
+  padding: 18px;
+}
+
+.section-kicker,
+.label,
+.metric-label,
+.legend-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.title {
+  margin: 8px 0 0;
+  font-family: var(--serif);
+  color: var(--primary);
+  letter-spacing: -0.03em;
+}
+
+.title-lg {
+  font-size: 1.42rem;
+}
+
+.title-md {
+  font-size: 1.12rem;
+}
+
+.copy,
+.small-copy {
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.small-copy {
+  font-size: 0.92rem;
+}
+
+.preset-grid,
+.metric-grid,
+.building-list,
+.summary-list {
+  display: grid;
+  gap: 10px;
+}
+
+.preset-btn {
+  text-align: left;
+  border: 1px solid transparent;
+  border-radius: 16px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.76);
+}
+
+.preset-btn.active {
+  border-color: rgba(177, 84, 52, 0.35);
+  background: linear-gradient(135deg, rgba(255,255,255,0.96), rgba(243, 195, 174, 0.3));
+}
+
+.preset-name {
+  margin-top: 5px;
+  font-weight: 700;
+  color: var(--primary);
+  font-size: 0.95rem;
+}
+
+.preset-caption {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.control-card,
+.metric-card,
+.callout-card,
+.building-card {
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 16px;
+  padding: 14px;
+}
+
+.control-card + .control-card,
+.callout-card + .callout-card {
+  margin-top: 14px;
+}
+
+.slider-row {
+  display: grid;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.slider-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.slider-value {
+  color: var(--primary);
+  font-family: var(--mono);
+  font-size: 10px;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent) var(--pct, 0%), #ddd9d1 var(--pct, 0%));
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--primary);
+  border: 2px solid #fff;
+  box-shadow: 0 4px 10px rgba(24, 55, 48, 0.2);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--primary);
+  border: 2px solid #fff;
+  box-shadow: 0 4px 10px rgba(24, 55, 48, 0.2);
+}
+
+.field-grid {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.field label {
+  display: block;
+}
+
+.field select {
+  width: 100%;
+  min-height: 40px;
+  margin-top: 6px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.86);
+  color: var(--primary);
+  padding: 0 12px;
+}
+
+.epicenter-readout {
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px dashed rgba(177, 84, 52, 0.35);
+  background: rgba(243, 195, 174, 0.18);
+}
+
+.center-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.stage-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 18px 18px 0;
+}
+
+.stage-title {
+  max-width: 620px;
+}
+
+.stage-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.view-switch {
+  display: inline-flex;
+  gap: 6px;
+  padding: 5px;
+  background: rgba(255,255,255,0.72);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+
+.view-btn {
+  min-height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.view-btn.active,
+.mode-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+  color: #fff;
+}
+
+.mode-btn {
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.72);
+  color: var(--primary);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.stage-body {
+  padding: 16px 18px 18px;
+  display: grid;
+  gap: 12px;
+  min-height: 0;
+  flex: 1;
+}
+
+.canvas-grid {
+  display: grid;
+  gap: 12px;
+  min-height: 0;
+}
+
+.canvas-grid.split {
+  grid-template-columns: 1fr 1fr;
+}
+
+.canvas-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.82);
+  min-height: 0;
+}
+
+.canvas-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.canvas-wrap {
+  position: relative;
+  flex: 1;
+  min-height: 420px;
+  background:
+    radial-gradient(circle at 18% 14%, rgba(243, 195, 174, 0.34), transparent 28%),
+    radial-gradient(circle at 82% 18%, rgba(24,55,48,0.08), transparent 22%),
+    linear-gradient(180deg, rgba(255,255,255,0.84), rgba(236,226,212,0.92));
+}
+
+.sim-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  filter: saturate(1.06) contrast(1.02);
+}
+
+.canvas-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 14px;
+}
+
+.overlay-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 30px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.84);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.overlay-pill strong {
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.timeline-card {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(255,255,255,0.8);
+}
+
+.timeline-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.timeline-row input[type="range"] {
+  flex: 1;
+}
+
+.legend-row {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+}
+
+.metric-grid {
+  grid-template-columns: 1fr 1fr;
+}
+
+.metric-value {
+  margin-top: 8px;
+  font-family: var(--serif);
+  font-size: 1.7rem;
+  color: var(--primary);
+}
+
+.metric-sub {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.summary-list {
+  margin-top: 10px;
+}
+
+.summary-item,
+.building-card {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+
+.status-tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.status-safe {
+  background: rgba(56, 111, 88, 0.12);
+  color: var(--safe);
+}
+
+.status-risky {
+  background: rgba(201, 142, 36, 0.14);
+  color: var(--warn);
+}
+
+.status-collapse {
+  background: rgba(171, 51, 34, 0.12);
+  color: var(--risk);
+}
+
+.damage-bar {
+  width: 100%;
+  height: 7px;
+  border-radius: 999px;
+  background: #ddd7cc;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.damage-bar > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--safe), var(--warn), var(--risk));
+}
+
+.loading {
+  opacity: 0.75;
+}
+
+.helper {
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.status-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 30px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--warn);
+}
+
+.status-dot.ready {
+  background: var(--safe);
+}
+
+.status-dot.error {
+  background: var(--risk);
+}
+
+@media (max-width: 1260px) {
+  .shell {
+    grid-template-columns: 280px 1fr;
+  }
+
+  .panel-right {
+    grid-column: 1 / -1;
+  }
+
+  .panel-right .panel-scroll {
+    height: auto;
+    max-height: none;
+  }
+}
+
+@media (max-width: 980px) {
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .shell {
+    grid-template-columns: 1fr;
+  }
+
+  .panel-scroll {
+    height: auto;
+    max-height: none;
+  }
+
+  .canvas-grid.split {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .topbar,
+  .shell {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .stage-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .canvas-wrap {
+    min-height: 320px;
+  }
+
+  .metric-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .timeline-row {
+    flex-wrap: wrap;
+  }
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">PhysicsNet</div>
+      <nav class="brand-nav">
+        <a href="/static/landing.html">Home</a>
+        <a href="/">Workspace</a>
+        <a href="/static/scenarios.html">Scenarios</a>
+        <a href="/static/earthquake.html" class="active">Earthquake</a>
+        <a href="/static/validation.html">Validation</a>
+        <a href="/static/explain.html">Explain</a>
+      </nav>
+    </div>
+    <button class="launch-btn" onclick="window.location.href='/'">Launch Workspace</button>
+  </header>
+
+  <main class="shell">
+    <aside class="panel panel-scroll">
+      <div class="panel-inner">
+        <div class="section-kicker">Earthquake Input Panel</div>
+        <h1 class="title title-lg">Build a real seismic scenario.</h1>
+        <p class="copy">Pick a preset, place the epicenter on the map, and run a dedicated earthquake simulation using the physics engine plus an AI damage estimator.</p>
+
+        <div class="control-card">
+          <div class="label">Scenario presets</div>
+          <div class="preset-grid" id="presetGrid"></div>
+          <div class="status-line">
+            <span class="status-chip"><span class="status-dot" id="simStatusDot"></span><span id="simStatusText">waiting for scenario</span></span>
+            <span class="status-chip" id="simSourceChip">source: pending</span>
+          </div>
+        </div>
+
+        <div class="control-card">
+          <div class="label">Seismic controls</div>
+          <div class="slider-row">
+            <div class="slider-top">
+              <span class="label">Magnitude</span>
+              <span class="slider-value" id="magnitudeVal">7.8</span>
+            </div>
+            <input type="range" id="magnitude" min="1" max="10" step="0.1" value="7.8">
+          </div>
+
+          <div class="slider-row">
+            <div class="slider-top">
+              <span class="label">Depth</span>
+              <span class="slider-value" id="depthVal">15.0 km</span>
+            </div>
+            <input type="range" id="depth" min="1" max="80" step="1" value="15">
+          </div>
+
+          <div class="slider-row">
+            <div class="slider-top">
+              <span class="label">Wave speed</span>
+              <span class="slider-value" id="speedVal">1.05x</span>
+            </div>
+            <input type="range" id="waveSpeed" min="0.5" max="2.0" step="0.05" value="1.05">
+          </div>
+
+          <div class="slider-row">
+            <div class="slider-top">
+              <span class="label">Duration</span>
+              <span class="slider-value" id="durationVal">18.0 s</span>
+            </div>
+            <input type="range" id="duration" min="4" max="40" step="1" value="18">
+          </div>
+
+          <div class="field-grid">
+            <div class="field">
+              <label class="label" for="mediumType">Medium type</label>
+              <select id="mediumType">
+                <option value="basin">Basin soil</option>
+                <option value="urban">Urban basin</option>
+                <option value="soft_soil">Soft soil</option>
+                <option value="rock">Rock</option>
+                <option value="mountain">Mountain</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="label" for="playbackSpeed">Playback speed</label>
+              <select id="playbackSpeed">
+                <option value="0.6">0.6x</option>
+                <option value="1" selected>1.0x</option>
+                <option value="1.5">1.5x</option>
+                <option value="2">2.0x</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="epicenter-readout">
+            <div class="label">Epicenter</div>
+            <div class="title title-md" id="epicenterText">x 0.34 / y 0.63</div>
+            <div class="helper">Click directly on the simulation map to reposition the epicenter.</div>
+          </div>
+
+          <div style="display:flex; gap:10px; margin-top:14px; flex-wrap:wrap;">
+            <button class="primary-btn" id="runBtn">Run Simulation</button>
+            <button class="ghost-btn" id="downloadBtn">Download Report</button>
+          </div>
+        </div>
+
+        <div class="callout-card">
+          <div class="label">Demo flow</div>
+          <div class="small-copy" style="margin-top:8px;">
+            1. Select a preset.
+            <br>2. Click the map to place the epicenter.
+            <br>3. Run the simulation.
+            <br>4. Watch P-waves and S-waves propagate.
+            <br>5. Compare physics vs AI damage prediction.
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <section class="panel center-panel">
+      <div class="stage-top">
+        <div class="stage-title">
+          <div class="section-kicker">Earthquake Simulation Page</div>
+          <h2 class="title title-lg">Seismic waves, impact heatmaps, and building response in one place.</h2>
+          <p class="copy">The main view shows expanding wave fronts from the epicenter, intensity-based damage zones, sample buildings, and an AI prediction overlay you can compare against the physics simulation.</p>
+        </div>
+        <div class="stage-toolbar">
+          <button class="ghost-btn" id="playPauseBtn">Play</button>
+          <button class="ghost-btn" id="resetPlaybackBtn">Reset</button>
+          <div class="view-switch">
+            <button class="view-btn active" data-view="physics">Physics</button>
+            <button class="view-btn" data-view="split">Split</button>
+            <button class="view-btn" data-view="ai">AI</button>
+          </div>
+          <button class="mode-btn active" data-mode="heat">Heatmap</button>
+          <button class="mode-btn" data-mode="waves">Wave bands</button>
+        </div>
+      </div>
+
+      <div class="stage-body">
+        <div class="canvas-grid" id="canvasGrid">
+          <div class="canvas-card" id="physicsCard">
+            <div class="canvas-header">
+              <div>
+                <div class="label">Physics simulation</div>
+                <div class="small-copy">P-wave and S-wave propagation with impact heatmap</div>
+              </div>
+              <div class="overlay-pill"><strong id="physicsFrameLabel">Awaiting run</strong></div>
+            </div>
+            <div class="canvas-wrap" id="physicsWrap">
+              <canvas class="sim-canvas" id="physicsCanvas"></canvas>
+              <div class="canvas-overlay">
+                <div class="overlay-pill">P-wave <strong id="pRadiusText">0.0 km</strong></div>
+                <div class="overlay-pill">S-wave <strong id="sRadiusText">0.0 km</strong></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="canvas-card" id="aiCard" style="display:none;">
+            <div class="canvas-header">
+              <div>
+                <div class="label">AI prediction</div>
+                <div class="small-copy">Fast damage-zone estimate without replaying every frame</div>
+              </div>
+              <div class="overlay-pill"><strong id="aiModeText">surrogate</strong></div>
+            </div>
+            <div class="canvas-wrap">
+              <canvas class="sim-canvas" id="aiCanvas"></canvas>
+              <div class="canvas-overlay">
+                <div class="overlay-pill">Confidence <strong id="aiConfidenceText">0%</strong></div>
+                <div class="overlay-pill">Compare <strong id="compareDeltaText">n/a</strong></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-card">
+          <div class="timeline-row">
+            <span class="label">Time slider</span>
+            <input type="range" id="timeline" min="0" max="0" step="1" value="0">
+            <span class="slider-value" id="timelineLabel">0.0 s</span>
+          </div>
+          <div class="legend-row">
+            <span class="legend-item"><span class="swatch" style="background:var(--p-wave)"></span><span class="legend-label">P-wave front</span></span>
+            <span class="legend-item"><span class="swatch" style="background:var(--s-wave)"></span><span class="legend-label">S-wave front</span></span>
+            <span class="legend-item"><span class="swatch" style="background:linear-gradient(90deg,var(--safe),var(--warn),var(--risk))"></span><span class="legend-label">Damage heatmap</span></span>
+            <span class="legend-item"><span class="swatch" style="background:#463f77"></span><span class="legend-label">Epicenter marker</span></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="panel panel-right panel-scroll">
+      <div class="panel-inner">
+        <div class="section-kicker">Simulation Results</div>
+        <h2 class="title title-lg">Damage summary and AI explanation.</h2>
+        <p class="copy">The right panel stays focused on impact metrics so this page reads like a decision tool, not just an animation.</p>
+
+        <div class="metric-grid">
+          <div class="metric-card">
+            <div class="metric-label">Max wave amplitude</div>
+            <div class="metric-value" id="maxAmplitude">0.000</div>
+            <div class="metric-sub">Peak amplitude from the physics run</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Affected radius</div>
+            <div class="metric-value" id="affectedRadius">0.0 km</div>
+            <div class="metric-sub">Distance with meaningful shaking</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Affected area</div>
+            <div class="metric-value" id="affectedArea">0.0%</div>
+            <div class="metric-sub">Area above low-damage threshold</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Estimated damage</div>
+            <div class="metric-value" id="damagePct">0.0%</div>
+            <div class="metric-sub">AI-estimated damage-zone share</div>
+          </div>
+        </div>
+
+        <div class="callout-card">
+          <div class="label">Damage summary</div>
+          <div class="summary-list" id="damageSummary">
+            <div class="summary-item"><span class="small-copy">Safe buildings</span><span class="status-tag status-safe" id="safeCount">0</span></div>
+            <div class="summary-item"><span class="small-copy">Risky buildings</span><span class="status-tag status-risky" id="riskyCount">0</span></div>
+            <div class="summary-item"><span class="small-copy">Collapse alerts</span><span class="status-tag status-collapse" id="collapseCount">0</span></div>
+          </div>
+        </div>
+
+        <div class="callout-card">
+          <div class="label">AI explanation</div>
+          <div class="small-copy" id="aiExplanation" style="margin-top:8px;">Run a simulation to see why the AI marks some areas as high-risk.</div>
+        </div>
+
+        <div class="callout-card">
+          <div class="label">Building response</div>
+          <div class="building-list" id="buildingList" style="margin-top:10px;"></div>
+        </div>
+      </div>
+    </aside>
+  </main>
+</div>
+
+<script>
+const state = {
+  presets: [],
+  preset: "nepal",
+  magnitude: 7.8,
+  depth_km: 15,
+  epicenter_x: 0.34,
+  epicenter_y: 0.63,
+  medium_type: "basin",
+  wave_speed: 1.05,
+  duration: 18,
+  resolution: 60,
+  playbackSpeed: 1,
+  view: "physics",
+  mode: "heat",
+  playing: false,
+  currentFrame: 0,
+  playbackTime: 0,
+  lastTick: 0,
+  simulation: null,
+  loading: false,
+  simulationSource: "pending",
+  dirtySinceLastRun: true,
+  autoRunTimer: null,
+};
+
+const FALLBACK_PRESETS = [
+  {
+    id: "nepal",
+    label: "Nepal Earthquake Scenario",
+    magnitude: 7.8,
+    depth_km: 15,
+    epicenter_x: 0.34,
+    epicenter_y: 0.63,
+    medium_type: "basin",
+    wave_speed: 1.05,
+    duration: 18,
+    resolution: 60,
+  },
+  {
+    id: "urban",
+    label: "Urban City Scenario",
+    magnitude: 6.6,
+    depth_km: 11,
+    epicenter_x: 0.48,
+    epicenter_y: 0.56,
+    medium_type: "urban",
+    wave_speed: 1.0,
+    duration: 14,
+    resolution: 58,
+  },
+  {
+    id: "disaster",
+    label: "High Magnitude Disaster",
+    magnitude: 8.9,
+    depth_km: 21,
+    epicenter_x: 0.28,
+    epicenter_y: 0.68,
+    medium_type: "mountain",
+    wave_speed: 1.18,
+    duration: 22,
+    resolution: 64,
+  },
+];
+
+const physicsCanvas = document.getElementById("physicsCanvas");
+const aiCanvas = document.getElementById("aiCanvas");
+const physicsCtx = physicsCanvas.getContext("2d");
+const aiCtx = aiCanvas.getContext("2d");
+
+function clamp(v, lo, hi) {
+  return Math.max(lo, Math.min(hi, v));
+}
+
+function $(id) {
+  return document.getElementById(id);
+}
+
+function setSliderTrack(el) {
+  const min = parseFloat(el.min);
+  const max = parseFloat(el.max);
+  const val = parseFloat(el.value);
+  const pct = ((val - min) / (max - min)) * 100;
+  el.style.setProperty("--pct", `${pct.toFixed(1)}%`);
+}
+
+function updateControlReadouts() {
+  $("magnitudeVal").textContent = Number(state.magnitude).toFixed(1);
+  $("depthVal").textContent = `${Number(state.depth_km).toFixed(1)} km`;
+  $("speedVal").textContent = `${Number(state.wave_speed).toFixed(2)}x`;
+  $("durationVal").textContent = `${Number(state.duration).toFixed(1)} s`;
+  $("epicenterText").textContent = `x ${state.epicenter_x.toFixed(2)} / y ${state.epicenter_y.toFixed(2)}`;
+}
+
+function setSimulationStatus(text, tone = "idle") {
+  $("simStatusText").textContent = text;
+  const dot = $("simStatusDot");
+  dot.classList.remove("ready", "error");
+  if (tone === "ready") dot.classList.add("ready");
+  if (tone === "error") dot.classList.add("error");
+}
+
+function updateSourceChip() {
+  $("simSourceChip").textContent = `source: ${state.simulationSource}`;
+}
+
+function markDirty(reason = "parameters changed") {
+  state.dirtySinceLastRun = true;
+  setSimulationStatus(reason, "idle");
+}
+
+function queueAutoRun(delay = 220) {
+  if (state.autoRunTimer) {
+    clearTimeout(state.autoRunTimer);
+  }
+  state.autoRunTimer = setTimeout(() => {
+    state.autoRunTimer = null;
+    if (state.simulation) {
+      runSimulation();
+    }
+  }, delay);
+}
+
+function syncControlsToState() {
+  $("magnitude").value = String(state.magnitude);
+  $("depth").value = String(state.depth_km);
+  $("waveSpeed").value = String(state.wave_speed);
+  $("duration").value = String(state.duration);
+  $("mediumType").value = state.medium_type;
+  $("playbackSpeed").value = String(state.playbackSpeed);
+  ["magnitude", "depth", "waveSpeed", "duration", "timeline"].forEach((id) => {
+    const el = $(id);
+    if (el) setSliderTrack(el);
+  });
+  updateControlReadouts();
+}
+
+function renderPresetButtons() {
+  const grid = $("presetGrid");
+  grid.innerHTML = state.presets.map((preset) => `
+    <button class="preset-btn ${preset.id === state.preset ? "active" : ""}" data-preset="${preset.id}">
+      <div class="label">${preset.id}</div>
+      <div class="preset-name">${preset.label}</div>
+      <div class="preset-caption">M ${Number(preset.magnitude).toFixed(1)} • ${preset.medium_type} • ${Number(preset.depth_km).toFixed(0)} km depth</div>
+    </button>
+  `).join("");
+}
+
+function applyPreset(presetId) {
+  const preset = state.presets.find((item) => item.id === presetId);
+  if (!preset) return;
+  state.preset = preset.id;
+  state.magnitude = Number(preset.magnitude);
+  state.depth_km = Number(preset.depth_km);
+  state.epicenter_x = Number(preset.epicenter_x);
+  state.epicenter_y = Number(preset.epicenter_y);
+  state.medium_type = preset.medium_type;
+  state.wave_speed = Number(preset.wave_speed);
+  state.duration = Number(preset.duration);
+  state.resolution = Number(preset.resolution || 60);
+  renderPresetButtons();
+  syncControlsToState();
+  markDirty(`${preset.label} loaded`);
+  drawPlaceholder();
+}
+
+async function loadPresets() {
+  try {
+    const res = await fetch("/api/earthquake/presets");
+    if (!res.ok) throw new Error(`preset request failed with ${res.status}`);
+    const data = await res.json();
+    state.presets = Array.isArray(data.presets) && data.presets.length ? data.presets : FALLBACK_PRESETS;
+  } catch (error) {
+    state.presets = FALLBACK_PRESETS;
+    $("aiExplanation").textContent = "Using built-in presets because the preset API was unavailable. You can still run the earthquake demo.";
+  }
+  renderPresetButtons();
+  applyPreset(state.preset);
+}
+
+function updateSummary(summary = { safe: 0, risky: 0, collapse: 0 }) {
+  $("safeCount").textContent = summary.safe ?? 0;
+  $("riskyCount").textContent = summary.risky ?? 0;
+  $("collapseCount").textContent = summary.collapse ?? 0;
+}
+
+function statusClass(status) {
+  if (status === "collapse") return "status-collapse";
+  if (status === "risky") return "status-risky";
+  return "status-safe";
+}
+
+function updateBuildingList(buildings = [], frameStates = []) {
+  const frameMap = new Map(frameStates.map((item) => [item.id, item]));
+  $("buildingList").innerHTML = buildings.map((building) => {
+    const current = frameMap.get(building.id) || {};
+    const damage = Number(building.damage_score || current.damage || 0);
+    const status = current.status || building.status || "safe";
+    return `
+      <div class="building-card">
+        <div style="flex:1;">
+          <div class="label">${building.material} • ${building.height} floors</div>
+          <div class="title title-md">${building.name}</div>
+          <div class="small-copy">Current intensity ${Number(current.intensity || 0).toFixed(2)}</div>
+          <div class="damage-bar"><span style="width:${Math.min(100, damage * 100)}%"></span></div>
+        </div>
+        <span class="status-tag ${statusClass(status)}">${status}</span>
+      </div>
+    `;
+  }).join("");
+}
+
+function colorForHeat(value) {
+  const v = clamp(value, 0, 1);
+  if (v < 0.5) {
+    const t = v / 0.5;
+    return `rgb(${Math.round(56 + 145 * t)}, ${Math.round(111 + 111 * t)}, ${Math.round(88 - 20 * t)})`;
+  }
+  const t = (v - 0.5) / 0.5;
+  return `rgb(${Math.round(201 + 10 * t)}, ${Math.round(142 - 82 * t)}, ${Math.round(36 - 2 * t)})`;
+}
+
+function resizeCanvas(canvas) {
+  const wrap = canvas.parentElement;
+  if (!wrap || wrap.clientWidth === 0 || wrap.clientHeight === 0) {
+    return false;
+  }
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = Math.round(wrap.clientWidth * dpr);
+  canvas.height = Math.round(wrap.clientHeight * dpr);
+  canvas.style.width = `${wrap.clientWidth}px`;
+  canvas.style.height = `${wrap.clientHeight}px`;
+  return true;
+}
+
+function drawSceneBackground(ctx, width, height) {
+  const sky = ctx.createLinearGradient(0, 0, 0, height);
+  sky.addColorStop(0, "rgba(255,255,255,0.88)");
+  sky.addColorStop(0.45, "rgba(247,241,231,0.96)");
+  sky.addColorStop(1, "rgba(224,210,188,0.98)");
+  ctx.fillStyle = sky;
+  ctx.fillRect(0, 0, width, height);
+
+  const glow = ctx.createRadialGradient(width * 0.16, height * 0.14, 20, width * 0.16, height * 0.14, width * 0.36);
+  glow.addColorStop(0, "rgba(255,255,255,0.65)");
+  glow.addColorStop(1, "rgba(255,255,255,0)");
+  ctx.fillStyle = glow;
+  ctx.fillRect(0, 0, width, height);
+
+  ctx.fillStyle = "rgba(196, 173, 140, 0.18)";
+  ctx.beginPath();
+  ctx.moveTo(0, height * 0.62);
+  ctx.quadraticCurveTo(width * 0.18, height * 0.52, width * 0.36, height * 0.6);
+  ctx.quadraticCurveTo(width * 0.54, height * 0.69, width * 0.78, height * 0.58);
+  ctx.quadraticCurveTo(width * 0.9, height * 0.53, width, height * 0.57);
+  ctx.lineTo(width, height);
+  ctx.lineTo(0, height);
+  ctx.closePath();
+  ctx.fill();
+
+  const ground = ctx.createLinearGradient(0, height * 0.66, 0, height);
+  ground.addColorStop(0, "rgba(188, 164, 129, 0.16)");
+  ground.addColorStop(1, "rgba(164, 130, 94, 0.32)");
+  ctx.fillStyle = ground;
+  ctx.fillRect(0, height * 0.76, width, height * 0.24);
+
+  ctx.strokeStyle = "rgba(24, 55, 48, 0.09)";
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= 10; i += 1) {
+    const px = (width / 10) * i;
+    const py = (height / 10) * i;
+    ctx.beginPath();
+    ctx.moveTo(px, 0);
+    ctx.lineTo(px, height);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(0, py);
+    ctx.lineTo(width, py);
+    ctx.stroke();
+  }
+}
+
+function shadeColor(base, alpha) {
+  return base.replace("ALPHA", String(alpha));
+}
+
+function drawBuildingPrism(ctx, x, y, width, height, depth, palette, tilt) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(tilt);
+
+  ctx.fillStyle = palette.front;
+  ctx.fillRect(-width / 2, -height, width, height);
+
+  ctx.beginPath();
+  ctx.moveTo(width / 2, -height);
+  ctx.lineTo(width / 2 + depth, -height - depth * 0.45);
+  ctx.lineTo(width / 2 + depth, -depth * 0.45);
+  ctx.lineTo(width / 2, 0);
+  ctx.closePath();
+  ctx.fillStyle = palette.side;
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.moveTo(-width / 2, -height);
+  ctx.lineTo(width / 2, -height);
+  ctx.lineTo(width / 2 + depth, -height - depth * 0.45);
+  ctx.lineTo(-width / 2 + depth, -height - depth * 0.45);
+  ctx.closePath();
+  ctx.fillStyle = palette.top;
+  ctx.fill();
+
+  ctx.fillStyle = "rgba(255,255,255,0.24)";
+  for (let row = 1; row < 5; row += 1) {
+    const wy = -height + row * (height / 6);
+    ctx.fillRect(-width / 2 + 4, wy, width - 8, 2);
+  }
+
+  ctx.strokeStyle = "rgba(255,255,255,0.1)";
+  ctx.strokeRect(-width / 2, -height, width, height);
+  ctx.restore();
+}
+
+function drawBuildings(ctx, width, height, buildings, frameStates = [], time = 0) {
+  const states = new Map((frameStates || []).map((item) => [item.id, item]));
+  buildings.forEach((building) => {
+    const current = states.get(building.id) || {};
+    const sway = Number(current.sway || 0);
+    const status = current.status || building.status || "safe";
+    const x = building.x * width + Math.sin((time + building.height) * 1.8) * sway * 0.34;
+    const y = building.y * height;
+    const w = 16 + building.height * 1.7;
+    const h = 26 + building.height * 8.5;
+    const depth = 8 + building.height * 0.6;
+    const tilt = Math.sin(time * 1.3 + building.height) * sway * 0.0038;
+    const palette = status === "collapse"
+      ? {
+          front: "rgba(171, 51, 34, 0.96)",
+          side: "rgba(123, 30, 20, 0.96)",
+          top: "rgba(214, 110, 84, 0.92)",
+        }
+      : status === "risky"
+        ? {
+            front: "rgba(201, 142, 36, 0.96)",
+            side: "rgba(153, 107, 25, 0.96)",
+            top: "rgba(236, 189, 95, 0.92)",
+          }
+        : {
+            front: "rgba(56, 111, 88, 0.96)",
+            side: "rgba(36, 81, 63, 0.96)",
+            top: "rgba(118, 176, 151, 0.92)",
+          };
+
+    ctx.save();
+    ctx.shadowColor = status === "collapse" ? "rgba(171, 51, 34, 0.22)" : "rgba(18, 28, 24, 0.16)";
+    ctx.shadowBlur = 18;
+    ctx.shadowOffsetY = 10;
+    drawBuildingPrism(ctx, x, y, w, h, depth, palette, tilt);
+    ctx.restore();
+
+    ctx.save();
+    ctx.fillStyle = "rgba(18, 28, 24, 0.14)";
+    ctx.beginPath();
+    ctx.ellipse(x + depth * 0.4, y + 6, w * 0.82, 8 + sway * 0.12, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  });
+}
+
+function drawGrid(ctx, canvas, grid, res, mode, epicenter, buildings, frameStates, frame) {
+  const w = canvas.width;
+  const h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+  ctx.save();
+  ctx.scale(w / canvas.clientWidth, h / canvas.clientHeight);
+
+  const cssW = canvas.clientWidth;
+  const cssH = canvas.clientHeight;
+  const cellW = cssW / res;
+  const cellH = cssH / res;
+
+  drawSceneBackground(ctx, cssW, cssH);
+
+  for (let y = 0; y < res; y += 1) {
+    for (let x = 0; x < res; x += 1) {
+      const index = y * res + x;
+      const value = Number(grid[index] || 0);
+      if (mode === "waves") {
+        const p = Number(frame.p_wave[index] || 0);
+        const s = Number(frame.s_wave[index] || 0);
+        const a = clamp(Math.abs(p) * 1.8, 0, 1);
+        const b = clamp(Math.abs(s) * 1.8, 0, 1);
+        const r = Math.round(252 * b + 36 * a);
+        const g = Math.round(196 * a + 118 * (1 - value));
+        const c = Math.round(255 * a + 44 * b);
+        ctx.fillStyle = `rgba(${r}, ${g}, ${c}, ${Math.max(a, b) * 0.54})`;
+      } else {
+        const alpha = 0.12 + value * 0.78;
+        const heatColor = colorForHeat(value);
+        ctx.fillStyle = heatColor.replace("rgb(", "rgba(").replace(")", `, ${alpha})`);
+      }
+      ctx.fillRect(x * cellW, y * cellH, cellW + 1, cellH + 1);
+    }
+  }
+
+  const shine = ctx.createLinearGradient(0, 0, cssW, cssH);
+  shine.addColorStop(0, "rgba(255,255,255,0.14)");
+  shine.addColorStop(0.42, "rgba(255,255,255,0.02)");
+  shine.addColorStop(1, "rgba(24,55,48,0.05)");
+  ctx.fillStyle = shine;
+  ctx.fillRect(0, 0, cssW, cssH);
+
+  const epicenterPx = epicenter.x * cssW;
+  const epicenterPy = epicenter.y * cssH;
+  ctx.save();
+  ctx.strokeStyle = "rgba(33, 31, 77, 0.92)";
+  ctx.fillStyle = "rgba(53, 49, 110, 0.92)";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.arc(epicenterPx, epicenterPy, 7, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(epicenterPx - 14, epicenterPy);
+  ctx.lineTo(epicenterPx + 14, epicenterPy);
+  ctx.moveTo(epicenterPx, epicenterPy - 14);
+  ctx.lineTo(epicenterPx, epicenterPy + 14);
+  ctx.stroke();
+  ctx.restore();
+
+  ctx.save();
+  ctx.lineWidth = 2.4;
+  ctx.strokeStyle = "rgba(90, 185, 255, 0.92)";
+  ctx.shadowColor = "rgba(90, 185, 255, 0.38)";
+  ctx.shadowBlur = 10;
+  ctx.beginPath();
+  ctx.arc(epicenterPx, epicenterPy, frame.p_radius * Math.min(cssW, cssH), 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.strokeStyle = "rgba(255, 157, 77, 0.94)";
+  ctx.shadowColor = "rgba(255, 157, 77, 0.34)";
+  ctx.beginPath();
+  ctx.arc(epicenterPx, epicenterPy, frame.s_radius * Math.min(cssW, cssH), 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.restore();
+
+  drawBuildings(ctx, cssW, cssH, buildings, frameStates, frame.t);
+
+  ctx.restore();
+}
+
+function drawAiGrid(ctx, canvas, grid, res, epicenter, buildings) {
+  const w = canvas.width;
+  const h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+  ctx.save();
+  ctx.scale(w / canvas.clientWidth, h / canvas.clientHeight);
+
+  const cssW = canvas.clientWidth;
+  const cssH = canvas.clientHeight;
+  const cellW = cssW / res;
+  const cellH = cssH / res;
+  drawSceneBackground(ctx, cssW, cssH);
+  for (let y = 0; y < res; y += 1) {
+    for (let x = 0; x < res; x += 1) {
+      const value = Number(grid[y * res + x] || 0);
+      const heatColor = colorForHeat(value);
+      ctx.fillStyle = heatColor.replace("rgb(", "rgba(").replace(")", `, ${0.18 + value * 0.72})`);
+      ctx.globalAlpha = 0.92;
+      ctx.fillRect(x * cellW, y * cellH, cellW + 1, cellH + 1);
+    }
+  }
+
+  ctx.globalAlpha = 1;
+  ctx.strokeStyle = "rgba(255,255,255,0.5)";
+  ctx.setLineDash([6, 6]);
+  ctx.strokeRect(14, 14, cssW - 28, cssH - 28);
+  ctx.setLineDash([]);
+
+  ctx.fillStyle = "rgba(53, 49, 110, 0.92)";
+  ctx.beginPath();
+  ctx.arc(epicenter.x * cssW, epicenter.y * cssH, 7, 0, Math.PI * 2);
+  ctx.fill();
+
+  drawBuildings(ctx, cssW, cssH, buildings, [], 0);
+
+  ctx.restore();
+}
+
+function drawPlaceholder() {
+  const ctxs = [physicsCtx, aiCtx];
+  const canvases = [physicsCanvas, aiCanvas];
+  const buildings = localBuildingCatalog(state.preset);
+  canvases.forEach((canvas, idx) => {
+    if (!resizeCanvas(canvas)) return;
+    const ctx = ctxs[idx];
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.scale(canvas.width / canvas.clientWidth, canvas.height / canvas.clientHeight);
+    drawSceneBackground(ctx, canvas.clientWidth, canvas.clientHeight);
+    ctx.fillStyle = "rgba(24, 55, 48, 0.68)";
+    ctx.font = `16px ${getComputedStyle(document.documentElement).getPropertyValue('--sans') || 'sans-serif'}`;
+    ctx.fillText("Click to place epicenter and run the earthquake scenario.", 28, 40);
+    const x = state.epicenter_x * canvas.clientWidth;
+    const y = state.epicenter_y * canvas.clientHeight;
+    ctx.fillStyle = "rgba(53, 49, 110, 0.92)";
+    ctx.beginPath();
+    ctx.arc(x, y, 7, 0, Math.PI * 2);
+    ctx.fill();
+    drawBuildings(ctx, canvas.clientWidth, canvas.clientHeight, buildings, [], 0);
+    ctx.restore();
+  });
+}
+
+function setView(view) {
+  state.view = view;
+  document.querySelectorAll("[data-view]").forEach((btn) => btn.classList.toggle("active", btn.dataset.view === view));
+  const grid = $("canvasGrid");
+  const aiCard = $("aiCard");
+  const physicsCard = $("physicsCard");
+  if (view === "split") {
+    grid.classList.add("split");
+    aiCard.style.display = "";
+    physicsCard.style.display = "";
+  } else if (view === "ai") {
+    grid.classList.remove("split");
+    aiCard.style.display = "";
+    physicsCard.style.display = "none";
+  } else {
+    grid.classList.remove("split");
+    aiCard.style.display = "none";
+    physicsCard.style.display = "";
+  }
+  renderFrame(state.currentFrame);
+}
+
+function setMode(mode) {
+  state.mode = mode;
+  document.querySelectorAll("[data-mode]").forEach((btn) => btn.classList.toggle("active", btn.dataset.mode === mode));
+  renderFrame(state.currentFrame);
+}
+
+function updateMetrics(metrics = {}) {
+  $("maxAmplitude").textContent = Number(metrics.max_wave_amplitude || 0).toFixed(3);
+  $("affectedRadius").textContent = `${Number(metrics.affected_radius_km || 0).toFixed(1)} km`;
+  $("affectedArea").textContent = `${Number(metrics.affected_area_pct || 0).toFixed(1)}%`;
+  $("damagePct").textContent = `${Number(metrics.estimated_damage_pct || 0).toFixed(1)}%`;
+}
+
+function renderFrame(index, syncPlaybackTime = true) {
+  if (!state.simulation || !state.simulation.frames.length) {
+    drawPlaceholder();
+    return;
+  }
+
+  const frames = state.simulation.frames;
+  state.currentFrame = clamp(index, 0, frames.length - 1);
+  $("timeline").value = String(state.currentFrame);
+  setSliderTrack($("timeline"));
+
+  const frame = frames[state.currentFrame];
+  if (syncPlaybackTime) {
+    state.playbackTime = Number(frame.t || 0);
+  }
+  const res = state.simulation.resolution;
+  const buildings = state.simulation.buildings || [];
+  const epicenter = state.simulation.epicenter;
+  const grid = state.mode === "waves" ? frame.heat : frame.heat;
+
+  if (resizeCanvas(physicsCanvas)) {
+    drawGrid(physicsCtx, physicsCanvas, grid, res, state.mode, epicenter, buildings, frame.building_states, frame);
+  }
+  if (resizeCanvas(aiCanvas)) {
+    drawAiGrid(aiCtx, aiCanvas, state.simulation.ai_prediction.damage_grid, res, epicenter, buildings);
+  }
+
+  $("timelineLabel").textContent = `${Number(frame.t).toFixed(2)} s`;
+  $("physicsFrameLabel").textContent = `${state.currentFrame + 1}/${frames.length}`;
+  $("pRadiusText").textContent = `${Number(frame.p_radius * state.simulation.map_scale_km).toFixed(1)} km`;
+  $("sRadiusText").textContent = `${Number(frame.s_radius * state.simulation.map_scale_km).toFixed(1)} km`;
+
+  updateBuildingList(buildings, frame.building_states);
+}
+
+function compareDamageDifference() {
+  if (!state.simulation) return "n/a";
+  const physics = Number(state.simulation.metrics.critical_area_pct || 0);
+  const ai = Number(state.simulation.metrics.estimated_damage_pct || 0);
+  return `${Math.abs(ai - physics).toFixed(1)} pts`;
+}
+
+function terrainAmplification(x, y, medium, preset) {
+  const basin = Math.exp(-(((x - 0.55) ** 2) / 0.03 + ((y - 0.52) ** 2) / 0.016));
+  const urban = Math.exp(-(((x - 0.5) ** 2) / 0.05 + ((y - 0.48) ** 2) / 0.03));
+  const ridge = Math.exp(-(((x - 0.22) ** 2) / 0.02 + ((y - 0.34) ** 2) / 0.08));
+  let amp = 1;
+  if (medium === "rock") amp = 0.78;
+  else if (medium === "soft_soil") amp = 1.28;
+  else if (medium === "urban") amp = 1.02 + urban * 0.5;
+  else if (medium === "mountain") amp = 0.92 + ridge * 0.12;
+  else amp = 1.02 + basin * 0.55;
+  if (preset === "nepal") amp += basin * 0.12;
+  if (preset === "disaster") amp += 0.08;
+  return amp;
+}
+
+function localBuildingCatalog(preset) {
+  if (preset === "urban") {
+    return [
+      { id: "b1", name: "Hospital Tower", x: 0.43, y: 0.36, height: 10, material: "strong" },
+      { id: "b2", name: "Market Block", x: 0.58, y: 0.41, height: 7, material: "weak" },
+      { id: "b3", name: "School", x: 0.66, y: 0.56, height: 5, material: "weak" },
+      { id: "b4", name: "Apartment Row", x: 0.38, y: 0.58, height: 8, material: "strong" },
+    ];
+  }
+  if (preset === "disaster") {
+    return [
+      { id: "b1", name: "Bridge Control", x: 0.62, y: 0.28, height: 4, material: "strong" },
+      { id: "b2", name: "Slope Village", x: 0.51, y: 0.52, height: 4, material: "weak" },
+      { id: "b3", name: "Relief Depot", x: 0.73, y: 0.61, height: 6, material: "strong" },
+      { id: "b4", name: "Old Settlement", x: 0.34, y: 0.63, height: 5, material: "weak" },
+    ];
+  }
+  return [
+    { id: "b1", name: "Heritage Block", x: 0.48, y: 0.38, height: 6, material: "weak" },
+    { id: "b2", name: "Clinic", x: 0.61, y: 0.45, height: 4, material: "strong" },
+    { id: "b3", name: "School", x: 0.68, y: 0.58, height: 5, material: "weak" },
+    { id: "b4", name: "Apartment Cluster", x: 0.39, y: 0.57, height: 8, material: "strong" },
+  ];
+}
+
+function buildLocalSimulation(payload) {
+  const resolution = payload.resolution || 60;
+  const framesCount = Math.max(24, Math.min(72, Math.round(payload.duration * 3)));
+  const mapScaleKm = payload.preset === "disaster" ? 35 : payload.preset === "urban" ? 20 : 28;
+  const buildings = localBuildingCatalog(payload.preset).map((b) => ({ ...b, damage_score: 0, status: "safe" }));
+  const maxHeat = new Array(resolution * resolution).fill(0);
+  const frames = [];
+  let maxWaveAmplitude = 0;
+  const mediumSpeedFactor = payload.medium_type === "rock" ? 1.24 : payload.medium_type === "soft_soil" ? 0.78 : payload.medium_type === "urban" ? 0.9 : payload.medium_type === "mountain" ? 1.08 : 0.96;
+  const mediumSpread = payload.medium_type === "rock" ? 0.0013 : payload.medium_type === "soft_soil" ? 0.0048 : payload.medium_type === "urban" ? 0.0038 : payload.medium_type === "mountain" ? 0.0026 : 0.0031;
+
+  for (let frameIndex = 0; frameIndex < framesCount; frameIndex += 1) {
+    const t = frameIndex / Math.max(framesCount - 1, 1);
+    const pRadius = t * (0.18 + payload.wave_speed * 0.44 * mediumSpeedFactor);
+    const sRadius = t * (0.12 + payload.wave_speed * 0.31 * mediumSpeedFactor);
+    const attenuationBase = (payload.magnitude / 10) * (1 / (1 + payload.depth_km / 30));
+    const pWave = [];
+    const sWave = [];
+    const heat = [];
+
+    for (let y = 0; y < resolution; y += 1) {
+      for (let x = 0; x < resolution; x += 1) {
+        const nx = x / Math.max(resolution - 1, 1);
+        const ny = y / Math.max(resolution - 1, 1);
+        const dx = nx - payload.epicenter_x;
+        const dy = ny - payload.epicenter_y;
+        const anisotropy = payload.medium_type === "mountain" ? 1.25 : payload.medium_type === "urban" ? 1.1 : 1;
+        const dist = Math.sqrt((dx * anisotropy) * (dx * anisotropy) + dy * dy);
+        const amp = terrainAmplification(nx, ny, payload.medium_type, payload.preset);
+        const decay = Math.exp(-dist * 4.6) * attenuationBase * amp;
+        const pBand = Math.exp(-((dist - pRadius) ** 2) / mediumSpread) * decay;
+        const sBand = Math.exp(-((dist - sRadius) ** 2) / (mediumSpread * 1.8)) * decay * 1.18;
+        const pVal = Math.sin((dist * (24 + mediumSpeedFactor * 2) - t * 18) * Math.PI) * pBand;
+        const sVal = Math.sin((dist * (17 + mediumSpeedFactor) - t * 12) * Math.PI) * sBand;
+        const heatVal = Math.min(1, Math.abs(pVal) * 0.65 + Math.abs(sVal) * 1.25);
+        pWave.push(Number(pVal.toFixed(3)));
+        sWave.push(Number(sVal.toFixed(3)));
+        heat.push(Number(heatVal.toFixed(3)));
+        maxHeat[y * resolution + x] = Math.max(maxHeat[y * resolution + x], heatVal);
+        maxWaveAmplitude = Math.max(maxWaveAmplitude, Math.abs(pVal) + Math.abs(sVal));
+      }
+    }
+
+    const buildingStates = buildings.map((building) => {
+      const bx = Math.round(building.x * (resolution - 1));
+      const by = Math.round(building.y * (resolution - 1));
+      const intensity = heat[by * resolution + bx] || 0;
+      const materialFactor = building.material === "weak" ? 1.22 : 0.82;
+      const damage = intensity * (0.34 + building.height / 17) * materialFactor;
+      building.damage_score = Math.max(building.damage_score, damage);
+      building.status = building.damage_score >= 0.78 ? "collapse" : building.damage_score >= 0.46 ? "risky" : "safe";
+      return {
+        id: building.id,
+        sway: Number((intensity * (8 + building.height * 1.5)).toFixed(3)),
+        damage: Number(damage.toFixed(3)),
+        intensity: Number(intensity.toFixed(3)),
+        status: building.status,
+      };
+    });
+
+    frames.push({
+      t: Number((t * payload.duration).toFixed(2)),
+      p_wave: pWave,
+      s_wave: sWave,
+      heat,
+      p_radius: Number(pRadius.toFixed(3)),
+      s_radius: Number(sRadius.toFixed(3)),
+      affected_radius_km: Number((Math.max(pRadius, sRadius) * mapScaleKm).toFixed(2)),
+      building_states: buildingStates,
+    });
+  }
+
+  const damageGrid = maxHeat.map((v) => Number(Math.min(1, v * 0.88 + 0.08).toFixed(3)));
+  const affectedAreaPct = 100 * maxHeat.filter((v) => v > 0.28).length / maxHeat.length;
+  const criticalAreaPct = 100 * maxHeat.filter((v) => v > 0.56).length / maxHeat.length;
+  const estimatedDamagePct = 100 * damageGrid.filter((v) => v > 0.34).length / damageGrid.length;
+  const summary = { safe: 0, risky: 0, collapse: 0 };
+  buildings.forEach((b) => { summary[b.status] += 1; });
+
+  return {
+    preset: payload.preset,
+    resolution,
+    epicenter: { x: payload.epicenter_x, y: payload.epicenter_y },
+    map_scale_km: mapScaleKm,
+    frames,
+    buildings: buildings.map((b) => ({ ...b, damage_score: Number(b.damage_score.toFixed(3)) })),
+    max_heat: maxHeat.map((v) => Number(v.toFixed(3))),
+    ai_prediction: {
+      damage_grid: damageGrid,
+      mode: "browser-fallback",
+      confidence: 76,
+      explanation: "This fallback mode is running fully in the browser. Damage is highest where strong shaking overlaps with amplified ground response and weaker buildings.",
+    },
+    metrics: {
+      max_wave_amplitude: Number(maxWaveAmplitude.toFixed(3)),
+      affected_radius_km: Number((Math.max(...frames.map((f) => f.affected_radius_km))).toFixed(2)),
+      affected_area_pct: Number(affectedAreaPct.toFixed(1)),
+      estimated_damage_pct: Number(estimatedDamagePct.toFixed(1)),
+      critical_area_pct: Number(criticalAreaPct.toFixed(1)),
+    },
+    damage_summary: summary,
+  };
+}
+
+function updateAiPanel() {
+  if (!state.simulation) return;
+  $("aiModeText").textContent = state.simulation.ai_prediction.mode;
+  $("aiConfidenceText").textContent = `${Number(state.simulation.ai_prediction.confidence || 0).toFixed(0)}%`;
+  $("compareDeltaText").textContent = compareDamageDifference();
+  $("aiExplanation").textContent = state.simulation.ai_prediction.explanation;
+}
+
+function updateResultsFromSimulation() {
+  if (!state.simulation) return;
+  state.dirtySinceLastRun = false;
+  updateMetrics(state.simulation.metrics);
+  updateSummary(state.simulation.damage_summary);
+  updateAiPanel();
+  $("timeline").max = String(Math.max(0, state.simulation.frames.length - 1));
+  renderFrame(0);
+}
+
+async function runSimulation() {
+  if (state.loading) return;
+  state.loading = true;
+  document.body.classList.add("loading");
+  $("runBtn").textContent = "Running...";
+  $("runBtn").disabled = true;
+  setSimulationStatus("running simulation", "idle");
+
+  const payload = {
+    preset: state.preset,
+    magnitude: state.magnitude,
+    depth_km: state.depth_km,
+    epicenter_x: state.epicenter_x,
+    epicenter_y: state.epicenter_y,
+    medium_type: state.medium_type,
+    wave_speed: state.wave_speed,
+    duration: state.duration,
+    resolution: state.resolution,
+  };
+
+  try {
+    const res = await fetch("/api/earthquake/simulate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    let data;
+    if (!res.ok) {
+      data = buildLocalSimulation(payload);
+      state.simulationSource = "browser fallback";
+      updateSourceChip();
+      $("aiExplanation").textContent = "Backend simulation was unavailable, so PhysicsNet switched to in-browser fallback mode for the earthquake demo.";
+    } else {
+      data = await res.json();
+      if (!data || !Array.isArray(data.frames)) {
+        throw new Error("simulation response did not include frame data");
+      }
+      state.simulationSource = data.ai_prediction?.mode || "backend";
+      updateSourceChip();
+    }
+    state.simulation = data;
+    state.playing = false;
+    state.currentFrame = 0;
+    state.playbackTime = 0;
+    state.lastTick = 0;
+    $("playPauseBtn").textContent = "Play";
+    updateResultsFromSimulation();
+    setSimulationStatus("simulation ready", "ready");
+  } catch (error) {
+    try {
+      state.simulation = buildLocalSimulation(payload);
+      state.simulationSource = "browser fallback";
+      updateSourceChip();
+      state.currentFrame = 0;
+      state.playbackTime = 0;
+      state.lastTick = 0;
+      state.playing = false;
+      $("aiExplanation").textContent = "The server request failed, so the page generated a local fallback earthquake simulation in your browser.";
+      updateResultsFromSimulation();
+      setSimulationStatus("fallback simulation ready", "ready");
+      $("playPauseBtn").textContent = "Play";
+    } catch (innerError) {
+      $("aiExplanation").textContent = `Simulation failed: ${error.message || error}.`;
+      setSimulationStatus("simulation failed", "error");
+    }
+  } finally {
+    state.loading = false;
+    document.body.classList.remove("loading");
+    $("runBtn").textContent = "Run Simulation";
+    $("runBtn").disabled = false;
+  }
+}
+
+function tick(ts) {
+  if (state.playing && state.simulation && state.simulation.frames.length) {
+    if (!state.lastTick) state.lastTick = ts;
+    const deltaMs = ts - state.lastTick;
+    state.lastTick = ts;
+    state.playbackTime += (deltaMs / 1000) * state.playbackSpeed;
+    const frames = state.simulation.frames;
+    const endTime = Number(frames[frames.length - 1]?.t || 0);
+    if (state.playbackTime >= endTime) {
+      state.playbackTime = endTime;
+      renderFrame(frames.length - 1, false);
+      state.playing = false;
+      $("playPauseBtn").textContent = "Play";
+    } else {
+      let nextIndex = frames.findIndex((frame) => Number(frame.t) >= state.playbackTime);
+      if (nextIndex < 0) nextIndex = frames.length - 1;
+      renderFrame(nextIndex, false);
+    }
+  } else {
+    state.lastTick = ts;
+  }
+  requestAnimationFrame(tick);
+}
+
+function downloadReport() {
+  if (!state.simulation) {
+    $("aiExplanation").textContent = "Run a simulation before downloading a report.";
+    setSimulationStatus("run a scenario before export", "idle");
+    return;
+  }
+  const report = {
+    preset: state.preset,
+    controls: {
+      magnitude: state.magnitude,
+      depth_km: state.depth_km,
+      epicenter_x: state.epicenter_x,
+      epicenter_y: state.epicenter_y,
+      medium_type: state.medium_type,
+      wave_speed: state.wave_speed,
+      duration: state.duration,
+    },
+    metrics: state.simulation.metrics,
+    damage_summary: state.simulation.damage_summary,
+    ai_prediction: state.simulation.ai_prediction,
+    buildings: state.simulation.buildings,
+  };
+  const blob = new Blob([JSON.stringify(report, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `earthquake-report-${state.preset}.json`;
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+function handleEpicenterPlacement(event) {
+  const rect = physicsCanvas.getBoundingClientRect();
+  const x = clamp((event.clientX - rect.left) / rect.width, 0.02, 0.98);
+  const y = clamp((event.clientY - rect.top) / rect.height, 0.02, 0.98);
+  state.epicenter_x = x;
+  state.epicenter_y = y;
+  updateControlReadouts();
+  markDirty("epicenter moved");
+  drawPlaceholder();
+  queueAutoRun(80);
+}
+
+function bindControls() {
+  [["magnitude", "magnitude"], ["depth", "depth_km"], ["waveSpeed", "wave_speed"], ["duration", "duration"]].forEach(([id, key]) => {
+    const el = $(id);
+    el.addEventListener("input", () => {
+      state[key] = Number(el.value);
+      setSliderTrack(el);
+      updateControlReadouts();
+      markDirty(`${id} updated`);
+    });
+  });
+
+  $("mediumType").addEventListener("change", (event) => {
+    state.medium_type = event.target.value;
+    markDirty("medium updated");
+  });
+
+  $("playbackSpeed").addEventListener("change", (event) => {
+    state.playbackSpeed = Number(event.target.value);
+    $("aiExplanation").textContent = `Playback speed set to ${state.playbackSpeed.toFixed(1)}x.`;
+  });
+
+  $("timeline").addEventListener("input", (event) => {
+    state.playing = false;
+    $("playPauseBtn").textContent = "Play";
+    state.lastTick = 0;
+    renderFrame(Number(event.target.value));
+  });
+
+  $("runBtn").addEventListener("click", runSimulation);
+  $("downloadBtn").addEventListener("click", downloadReport);
+  $("playPauseBtn").addEventListener("click", async () => {
+    if (!state.simulation) {
+      await runSimulation();
+      return;
+    }
+    if (!state.playing && state.currentFrame >= state.simulation.frames.length - 1) {
+      renderFrame(0);
+    }
+    if (!state.playing && state.simulation?.frames?.length) {
+      state.playbackTime = Number(state.simulation.frames[state.currentFrame]?.t || 0);
+    }
+    state.playing = !state.playing;
+    state.lastTick = 0;
+    $("playPauseBtn").textContent = state.playing ? "Pause" : "Play";
+  });
+  $("resetPlaybackBtn").addEventListener("click", () => {
+    state.playing = false;
+    state.playbackTime = 0;
+    state.lastTick = 0;
+    $("playPauseBtn").textContent = "Play";
+    renderFrame(0);
+  });
+
+  document.querySelectorAll("[data-view]").forEach((btn) => {
+    btn.addEventListener("click", () => setView(btn.dataset.view));
+  });
+
+  document.querySelectorAll("[data-mode]").forEach((btn) => {
+    btn.addEventListener("click", () => setMode(btn.dataset.mode));
+  });
+
+  $("presetGrid").addEventListener("click", (event) => {
+    const btn = event.target.closest("[data-preset]");
+    if (!btn) return;
+    applyPreset(btn.dataset.preset);
+  });
+
+  physicsCanvas.addEventListener("click", handleEpicenterPlacement);
+  window.addEventListener("resize", () => {
+    if (state.simulation) renderFrame(state.currentFrame);
+    else drawPlaceholder();
+  });
+}
+
+async function init() {
+  bindControls();
+  syncControlsToState();
+  updateSourceChip();
+  setSimulationStatus("ready to run", "idle");
+  setView("physics");
+  await loadPresets();
+  drawPlaceholder();
+  requestAnimationFrame(tick);
+}
+
+init();
+</script>
+</body>
+</html>

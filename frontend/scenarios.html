@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PhysicsNet - Scenarios</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&amp;family=Inter:wght@400;500;600&amp;family=DM+Mono:ital,wght@0,400;0,500;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#2a4d43",
+                        "surface-container-high": "#e8e8e6",
+                        "on-tertiary-container": "#ab7c7b",
+                        "primary-fixed-dim": "#a9cfc1",
+                        "surface-tint": "#42655a",
+                        "on-secondary-container": "#416d5f",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#301213",
+                        "on-tertiary": "#ffffff",
+                        "surface-dim": "#dadad8",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed-variant": "#224e42",
+                        "on-primary-fixed": "#002018",
+                        "error-container": "#ffdad6",
+                        "surface-container-lowest": "#ffffff",
+                        "outline-variant": "#c1c8c4",
+                        "surface-container-low": "#f4f4f1",
+                        "outline": "#717975",
+                        "on-surface-variant": "#414845",
+                        "secondary-fixed-dim": "#a1d0bf",
+                        "tertiary-fixed-dim": "#efb9b8",
+                        "on-primary-container": "#6b8f83",
+                        "on-error-container": "#93000a",
+                        "on-background": "#1a1c1b",
+                        "on-tertiary-fixed-variant": "#633c3c",
+                        "surface-bright": "#faf9f7",
+                        "secondary": "#3a6759",
+                        "secondary-fixed": "#bdeddb",
+                        "secondary-container": "#bdeddb",
+                        "inverse-primary": "#a9cfc1",
+                        "inverse-surface": "#2f3130",
+                        "background": "#faf9f7",
+                        "tertiary-container": "#361717",
+                        "tertiary": "#180203",
+                        "surface-variant": "#e2e2e0",
+                        "primary": "#000c07",
+                        "inverse-on-surface": "#f1f1ef",
+                        "on-surface": "#1a1c1b",
+                        "surface-container-highest": "#e2e2e0",
+                        "primary-fixed": "#c4ebdc",
+                        "primary-container": "#00261d",
+                        "tertiary-fixed": "#ffdad8",
+                        "on-secondary": "#ffffff",
+                        "surface-container": "#eeeeec",
+                        "surface": "#faf9f7",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed": "#002018"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "xs": "4px",
+                        "xl": "48px",
+                        "margin": "32px",
+                        "gutter": "24px",
+                        "sm": "8px",
+                        "lg": "24px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "ui-label": ["DM Mono"],
+                        "h1": ["DM Serif Display"],
+                        "body-lg": ["Inter"],
+                        "h3": ["DM Serif Display"],
+                        "body-md": ["Inter"],
+                        "h2": ["DM Serif Display"]
+                    },
+                    "fontSize": {
+                        "ui-label": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "500" }],
+                        "h1": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "h3": ["24px", { "lineHeight": "1.2", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "h2": ["32px", { "lineHeight": "1.2", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .ghost-border { border: 1px solid rgba(0,0,0,0.06); }
+        .ambient-shadow { box-shadow: 0 10px 40px -10px rgba(0,0,0,0.04); }
+    </style>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex flex-col font-body-md text-body-md pb-[80px]">
+<!-- TopAppBar -->
+<header class="bg-[#f9faf7] dark:bg-[#00261d] font-mono uppercase tracking-widest text-[11px] docked full-width top-0 border-b z-50 border-b border-black/5 dark:border-white/10 flat no shadows flex justify-between items-center w-full px-8 h-16 text-[#0d3d31] dark:text-[#f9faf7]">
+<div class="font-serif font-bold text-xl text-[#0d3d31] dark:text-white">PhysicsNet</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-stone-500 hover:text-[#0d3d31] transition-colors hover:bg-stone-100 dark:hover:bg-white/5 px-2 py-1" href="/static/landing.html">Home</a>
+<a class="text-stone-500 hover:text-[#0d3d31] transition-colors hover:bg-stone-100 dark:hover:bg-white/5 px-2 py-1" href="/">Workspace</a>
+<a class="text-[#0d3d31] dark:text-white border-b border-[#0d3d31] pb-1 hover:bg-stone-100 dark:hover:bg-white/5 px-2 py-1 Active: opacity-80 transition-all" href="/static/scenarios.html">Scenarios</a>
+<a class="text-stone-500 hover:text-[#0d3d31] transition-colors hover:bg-stone-100 dark:hover:bg-white/5 px-2 py-1" href="/static/earthquake.html">Earthquake</a>
+<a class="text-stone-500 hover:text-[#0d3d31] transition-colors hover:bg-stone-100 dark:hover:bg-white/5 px-2 py-1" href="/static/validation.html">Validation</a>
+<a class="text-stone-500 hover:text-[#0d3d31] transition-colors hover:bg-stone-100 dark:hover:bg-white/5 px-2 py-1" href="/static/explain.html">Explain</a>
+<a class="text-stone-500 hover:text-[#0d3d31] transition-colors hover:bg-stone-100 dark:hover:bg-white/5 px-2 py-1" href="/static/about.html">About</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="bg-[#00261d] text-[#ffffff] px-4 py-2 font-ui-label text-ui-label rounded hover:opacity-90 transition-opacity" onclick="window.location.href='/'">Launch Demo</button>
+<button class="text-stone-500 hover:text-[#0d3d31] transition-colors p-2">
+<span class="material-symbols-outlined">code</span>
+</button>
+</div>
+</header>
+<main class="flex-grow pt-xl pb-xl px-margin md:px-margin max-w-7xl mx-auto w-full">
+<!-- Header Block -->
+<div class="mb-xl max-w-3xl">
+<p class="font-ui-label text-ui-label text-outline mb-sm uppercase">BROWSE SCENARIOS</p>
+<h1 class="font-h1 text-h1 text-on-surface mb-md">Five faces of one equation.</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Explore canonical wave behaviors. Each scenario isolates a specific physical phenomenon governed by the standard 2D acoustic wave equation.</p>
+</div>
+<!-- Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Card 1 (Large) -->
+<div class="bg-surface-container-lowest rounded-xl ghost-border ambient-shadow p-lg flex flex-col md:col-span-2 lg:row-span-2">
+<div class="h-64 bg-surface-container mb-lg rounded-lg ghost-border overflow-hidden relative">
+<canvas class="w-full h-full object-cover opacity-80" data-alt="Abstract rendering of a single circular wave ripple expanding on a dark technical grid with subtle teal and blue color gradients" id="canvas-scenario-1"></canvas>
+</div>
+<div class="flex-grow flex flex-col justify-between">
+<div>
+<p class="font-ui-label text-ui-label text-outline mb-sm uppercase">SCENARIO 01</p>
+<h3 class="font-h3 text-h3 text-on-surface mb-xs">Single Source</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">A foundational scenario demonstrating isotropic spherical spreading from a localized impulsive source in a homogeneous medium.</p>
+<div class="flex flex-wrap gap-2 mb-md">
+<span class="bg-surface-container px-2 py-1 rounded font-ui-label text-ui-label text-on-surface-variant">absorbing boundary</span>
+<span class="bg-surface-container px-2 py-1 rounded font-ui-label text-ui-label text-on-surface-variant">ricker wavelet</span>
+</div>
+</div>
+<button class="self-start text-primary-container font-ui-label text-ui-label uppercase tracking-widest hover:text-on-primary-fixed-variant transition-colors group flex items-center gap-1">
+                        Launch in workspace <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest rounded-xl ghost-border ambient-shadow p-lg flex flex-col">
+<div class="h-32 bg-surface-container mb-md rounded-lg ghost-border overflow-hidden">
+<canvas class="w-full h-full object-cover opacity-80" data-alt="Technical visualization showing two intersecting circular wave patterns creating an interference grid, rendered in precise monochrome line art" id="canvas-scenario-2"></canvas>
+</div>
+<div class="flex-grow flex flex-col justify-between">
+<div>
+<p class="font-ui-label text-ui-label text-outline mb-sm uppercase">SCENARIO 02</p>
+<h3 class="font-h3 text-h3 text-on-surface mb-xs">Interference</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">Constructive and destructive superposition from dual synchronized sources.</p>
+<div class="flex flex-wrap gap-2 mb-md">
+<span class="bg-surface-container px-2 py-1 rounded font-ui-label text-ui-label text-on-surface-variant">dual source</span>
+</div>
+</div>
+<button class="self-start text-primary-container font-ui-label text-ui-label uppercase tracking-widest hover:text-on-primary-fixed-variant transition-colors group flex items-center gap-1">
+                        Launch <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest rounded-xl ghost-border ambient-shadow p-lg flex flex-col">
+<div class="h-32 bg-surface-container mb-md rounded-lg ghost-border overflow-hidden">
+<canvas class="w-full h-full object-cover opacity-80" data-alt="Abstract 3D render showing a wave bouncing off a solid planar surface, illustrating reflection physics with clean white and silver tones" id="canvas-scenario-3"></canvas>
+</div>
+<div class="flex-grow flex flex-col justify-between">
+<div>
+<p class="font-ui-label text-ui-label text-outline mb-sm uppercase">SCENARIO 03</p>
+<h3 class="font-h3 text-h3 text-on-surface mb-xs">Reflection</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">Wavefield interaction with a perfectly rigid planar interface.</p>
+<div class="flex flex-wrap gap-2 mb-md">
+<span class="bg-surface-container px-2 py-1 rounded font-ui-label text-ui-label text-on-surface-variant">dirichlet boundary</span>
+</div>
+</div>
+<button class="self-start text-primary-container font-ui-label text-ui-label uppercase tracking-widest hover:text-on-primary-fixed-variant transition-colors group flex items-center gap-1">
+                        Launch <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="bg-surface-container-lowest rounded-xl ghost-border ambient-shadow p-lg flex flex-col">
+<div class="h-32 bg-surface-container mb-md rounded-lg ghost-border overflow-hidden">
+<canvas class="w-full h-full object-cover opacity-80" data-alt="Scientific plot showing waves bending around a sharp corner or obstacle, highlighting diffraction patterns in a subdued palette" id="canvas-scenario-4"></canvas>
+</div>
+<div class="flex-grow flex flex-col justify-between">
+<div>
+<p class="font-ui-label text-ui-label text-outline mb-sm uppercase">SCENARIO 04</p>
+<h3 class="font-h3 text-h3 text-on-surface mb-xs">Diffraction</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">Wavefront healing and energy scattering around a sharp localized obstacle.</p>
+<div class="flex flex-wrap gap-2 mb-md">
+<span class="bg-surface-container px-2 py-1 rounded font-ui-label text-ui-label text-on-surface-variant">scatterer</span>
+</div>
+</div>
+<button class="self-start text-primary-container font-ui-label text-ui-label uppercase tracking-widest hover:text-on-primary-fixed-variant transition-colors group flex items-center gap-1">
+                        Launch <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Card 5 -->
+<div class="bg-surface-container-lowest rounded-xl ghost-border ambient-shadow p-lg flex flex-col md:col-span-2 lg:col-span-1">
+<div class="h-32 bg-surface-container mb-md rounded-lg ghost-border overflow-hidden">
+<canvas class="w-full h-full object-cover opacity-80" data-alt="Geological cross-section visualization showing wave energy refracting through multiple layered strata with varying velocity gradients" id="canvas-scenario-5"></canvas>
+</div>
+<div class="flex-grow flex flex-col justify-between">
+<div>
+<p class="font-ui-label text-ui-label text-outline mb-sm uppercase">SCENARIO 05</p>
+<h3 class="font-h3 text-h3 text-on-surface mb-xs">Seismic Refraction</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">Head waves and critical refraction across a high-contrast velocity gradient layer.</p>
+<div class="flex flex-wrap gap-2 mb-md">
+<span class="bg-surface-container px-2 py-1 rounded font-ui-label text-ui-label text-on-surface-variant">velocity model</span>
+<span class="bg-surface-container px-2 py-1 rounded font-ui-label text-ui-label text-on-surface-variant">head waves</span>
+</div>
+</div>
+<button class="self-start text-primary-container font-ui-label text-ui-label uppercase tracking-widest hover:text-on-primary-fixed-variant transition-colors group flex items-center gap-1">
+                        Launch <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-[#f9faf7] dark:bg-[#00261d] text-[#0d3d31] dark:text-[#f9faf7] font-mono text-[10px] uppercase tracking-widest docked full-width bottom-0 border-t border-t border-black/5 dark:border-white/10 flat no shadows fixed bottom-0 w-full flex justify-between items-center px-8 py-2 z-40 mt-auto">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full animate-pulse bg-green-500"></div>
+<span>SYSTEM OPERATIONAL</span>
+</div>
+<nav class="flex gap-4">
+<a class="text-stone-500 hover:text-[#0d3d31] dark:hover:text-white transition-colors" href="#">Documentation</a>
+<a class="text-stone-500 hover:text-[#0d3d31] dark:hover:text-white transition-colors" href="#">Support</a>
+<a class="text-stone-500 hover:text-[#0d3d31] dark:hover:text-white transition-colors" href="#">API</a>
+</nav>
+</footer>
+</body></html>
