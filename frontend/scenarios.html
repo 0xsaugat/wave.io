@@ -4,6 +4,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>wave.io - Scenarios</title>
+<link href="/images/logo.jpeg" rel="icon" type="image/jpeg"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&amp;family=Inter:wght@400;500;600&amp;family=DM+Mono:ital,wght@0,400;0,500;1,400&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -103,26 +104,23 @@
         .ambient-shadow { box-shadow: 0 10px 40px -10px rgba(0,0,0,0.04); }
     </style>
 </head>
-<body class="bg-background text-on-surface antialiased min-h-screen flex flex-col font-body-md text-body-md pb-[80px] pt-16">
-<!-- Consistent Navigation Bar -->
-<header class="fixed top-0 w-full bg-[#f9faf7] dark:bg-[#00261d] z-50 border-b border-black/5 dark:border-white/10">
-<div class="flex justify-between items-center px-8 h-16">
-<div class="font-serif font-bold text-xl text-[#0d3d31] dark:text-white">wave.io</div>
-<nav class="hidden md:flex items-center gap-2">
-<a class="font-mono uppercase tracking-widest text-[11px] text-stone-500 hover:text-[#0d3d31] dark:hover:text-white transition-colors hover:bg-stone-100 dark:hover:bg-white/5 px-3 py-2 rounded" href="/static/landing.html">Home</a>
-<a class="font-mono uppercase tracking-widest text-[11px] text-stone-500 hover:text-[#0d3d31] dark:hover:text-white transition-colors hover:bg-stone-100 dark:hover:bg-white/5 px-3 py-2 rounded" href="/static//">Workspace</a>
-<a class="font-mono uppercase tracking-widest text-[11px] text-[#0d3d31] dark:text-white border-b-2 border-[#0d3d31] px-3 py-2 rounded" href="/static/scenarios.html">Scenarios</a>
-<a class="font-mono uppercase tracking-widest text-[11px] text-stone-500 hover:text-[#0d3d31] dark:hover:text-white transition-colors hover:bg-stone-100 dark:hover:bg-white/5 px-3 py-2 rounded" href="/static/earthquake.html">Earthquake</a>
-<a class="font-mono uppercase tracking-widest text-[11px] text-stone-500 hover:text-[#0d3d31] dark:hover:text-white transition-colors hover:bg-stone-100 dark:hover:bg-white/5 px-3 py-2 rounded" href="/static/validation.html">Validation</a>
-<a class="font-mono uppercase tracking-widest text-[11px] text-stone-500 hover:text-[#0d3d31] dark:hover:text-white transition-colors hover:bg-stone-100 dark:hover:bg-white/5 px-3 py-2 rounded" href="/static/explain.html">Explain</a>
-<a class="font-mono uppercase tracking-widest text-[11px] text-stone-500 hover:text-[#0d3d31] dark:hover:text-white transition-colors hover:bg-stone-100 dark:hover:bg-white/5 px-3 py-2 rounded" href="/static/about.html">About</a>
+<body class="bg-background text-on-surface antialiased min-h-screen flex flex-col font-body-md text-body-md pb-[80px]">
+<!-- TopAppBar -->
+<header style="position:sticky;top:0;z-index:50;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:64px;padding:0 32px;border-bottom:1px solid rgba(0,0,0,0.08);background:#f9faf7;">
+<a aria-label="wave.io home" href="/static/landing.html" style="display:inline-flex;align-items:center;text-decoration:none;">
+<img alt="wave.io" src="/images/logo.jpeg" style="height:40px;width:auto;display:block;border-radius:6px;"/>
+</a>
+<nav aria-label="Sections" style="display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;">
+<a href="/" style="text-decoration:none;color:#6b7280;padding:4px 8px;">Workspace</a>
+<a href="/static/scenarios.html" style="text-decoration:none;color:#6b7280;padding:4px 8px;">Scenarios</a>
+<a href="/static/earthquake.html" style="text-decoration:none;color:#6b7280;padding:4px 8px;">Earthquake</a>
+<a href="/static/validation.html" style="text-decoration:none;color:#6b7280;padding:4px 8px;">Validation</a>
+<a href="/static/explain.html" style="text-decoration:none;color:#6b7280;padding:4px 8px;">Explain</a>
+<a href="/static/about.html" style="text-decoration:none;color:#6b7280;padding:4px 8px;">About</a>
 </nav>
-<div class="flex items-center gap-4">
-<button class="hidden md:inline-block bg-[#00261d] hover:bg-[#00261d]/90 text-[#ffffff] px-4 py-2 font-mono uppercase tracking-widest text-[11px] rounded transition-colors" onclick="window.location.href='/'">Launch Demo</button>
-<button class="text-stone-500 hover:text-[#0d3d31] dark:hover:text-white transition-colors p-2 rounded hover:bg-stone-100 dark:hover:bg-white/5">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">code</span>
-</button>
-</div>
+<div style="display:flex;align-items:center;justify-self:end;gap:10px;">
+<button type="button" aria-label="Code" style="border:0;background:transparent;color:#6b7280;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;padding:6px 8px;cursor:pointer;">code</button>
+<button type="button" onclick="window.location.href='/'" style="border:0;background:#00261d;color:#ffffff;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;padding:9px 14px;border-radius:4px;cursor:pointer;">Launch Demo</button>
 </div>
 </header>
 <main class="flex-grow pt-xl pb-xl px-margin md:px-margin max-w-7xl mx-auto w-full">
@@ -137,7 +135,7 @@
 <!-- Card 1 (Large) -->
 <div class="bg-surface-container-lowest rounded-xl ghost-border ambient-shadow p-lg flex flex-col md:col-span-2 lg:row-span-2">
 <div class="h-64 bg-surface-container mb-lg rounded-lg ghost-border overflow-hidden relative">
-<canvas class="w-full h-full object-cover opacity-80" data-alt="Abstract rendering of a single circular wave ripple expanding on a dark technical grid with subtle teal and blue color gradients" id="canvas-scenario-1"></canvas>
+<img alt="Real water ripple pattern from a single disturbance" class="w-full h-full object-cover opacity-90" src="/images/singlesource.png"/>
 </div>
 <div class="flex-grow flex flex-col justify-between">
 <div>
@@ -157,7 +155,7 @@
 <!-- Card 2 -->
 <div class="bg-surface-container-lowest rounded-xl ghost-border ambient-shadow p-lg flex flex-col">
 <div class="h-32 bg-surface-container mb-md rounded-lg ghost-border overflow-hidden">
-<canvas class="w-full h-full object-cover opacity-80" data-alt="Technical visualization showing two intersecting circular wave patterns creating an interference grid, rendered in precise monochrome line art" id="canvas-scenario-2"></canvas>
+<img alt="Real overlapping wave patterns suggesting interference" class="w-full h-full object-cover opacity-90" src="/images/interference.png"/>
 </div>
 <div class="flex-grow flex flex-col justify-between">
 <div>
@@ -176,7 +174,7 @@
 <!-- Card 3 -->
 <div class="bg-surface-container-lowest rounded-xl ghost-border ambient-shadow p-lg flex flex-col">
 <div class="h-32 bg-surface-container mb-md rounded-lg ghost-border overflow-hidden">
-<canvas class="w-full h-full object-cover opacity-80" data-alt="Abstract 3D render showing a wave bouncing off a solid planar surface, illustrating reflection physics with clean white and silver tones" id="canvas-scenario-3"></canvas>
+<img alt="Real wave reflection on clear blue water" class="w-full h-full object-cover opacity-90" src="/images/reflection.png"/>
 </div>
 <div class="flex-grow flex flex-col justify-between">
 <div>
@@ -195,7 +193,7 @@
 <!-- Card 4 -->
 <div class="bg-surface-container-lowest rounded-xl ghost-border ambient-shadow p-lg flex flex-col">
 <div class="h-32 bg-surface-container mb-md rounded-lg ghost-border overflow-hidden">
-<canvas class="w-full h-full object-cover opacity-80" data-alt="Scientific plot showing waves bending around a sharp corner or obstacle, highlighting diffraction patterns in a subdued palette" id="canvas-scenario-4"></canvas>
+<img alt="Real prism light and color spread suggesting diffraction" class="w-full h-full object-cover opacity-90" src="/images/diffraction.png"/>
 </div>
 <div class="flex-grow flex flex-col justify-between">
 <div>
@@ -214,7 +212,7 @@
 <!-- Card 5 -->
 <div class="bg-surface-container-lowest rounded-xl ghost-border ambient-shadow p-lg flex flex-col md:col-span-2 lg:col-span-1">
 <div class="h-32 bg-surface-container mb-md rounded-lg ghost-border overflow-hidden">
-<canvas class="w-full h-full object-cover opacity-80" data-alt="Geological cross-section visualization showing wave energy refracting through multiple layered strata with varying velocity gradients" id="canvas-scenario-5"></canvas>
+<img alt="Real layered rock formations for seismic refraction context" class="w-full h-full object-cover opacity-90" src="/images/SeismicRefraction.png"/>
 </div>
 <div class="flex-grow flex flex-col justify-between">
 <div>

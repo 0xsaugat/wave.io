@@ -22,6 +22,10 @@ _FRONTEND = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "fron
 if os.path.isdir(_FRONTEND):
     app.mount("/static", StaticFiles(directory=_FRONTEND), name="static")
 
+_IMAGES = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "images"))
+if os.path.isdir(_IMAGES):
+    app.mount("/images", StaticFiles(directory=_IMAGES), name="images")
+
     @app.get("/")
     def index():
         return FileResponse(os.path.join(_FRONTEND, "index.html"))
