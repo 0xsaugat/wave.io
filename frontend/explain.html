@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Explain - PhysicsNet Wave</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&amp;family=DM+Serif+Display&amp;family=Inter:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-fixed-variant": "#2a4d43",
+                    "surface-container-high": "#e8e8e6",
+                    "on-tertiary-container": "#ab7c7b",
+                    "primary-fixed-dim": "#a9cfc1",
+                    "surface-tint": "#42655a",
+                    "on-secondary-container": "#416d5f",
+                    "error": "#ba1a1a",
+                    "on-tertiary-fixed": "#301213",
+                    "on-tertiary": "#ffffff",
+                    "surface-dim": "#dadad8",
+                    "on-error": "#ffffff",
+                    "on-secondary-fixed-variant": "#224e42",
+                    "on-primary-fixed": "#002018",
+                    "error-container": "#ffdad6",
+                    "surface-container-lowest": "#ffffff",
+                    "outline-variant": "#c1c8c4",
+                    "surface-container-low": "#f4f4f1",
+                    "outline": "#717975",
+                    "on-surface-variant": "#414845",
+                    "secondary-fixed-dim": "#a1d0bf",
+                    "tertiary-fixed-dim": "#efb9b8",
+                    "on-primary-container": "#6b8f83",
+                    "on-error-container": "#93000a",
+                    "on-background": "#1a1c1b",
+                    "on-tertiary-fixed-variant": "#633c3c",
+                    "surface-bright": "#faf9f7",
+                    "secondary": "#3a6759",
+                    "secondary-fixed": "#bdeddb",
+                    "secondary-container": "#bdeddb",
+                    "inverse-primary": "#a9cfc1",
+                    "inverse-surface": "#2f3130",
+                    "background": "#faf9f7",
+                    "tertiary-container": "#361717",
+                    "tertiary": "#180203",
+                    "surface-variant": "#e2e2e0",
+                    "primary": "#000c07",
+                    "inverse-on-surface": "#f1f1ef",
+                    "on-surface": "#1a1c1b",
+                    "surface-container-highest": "#e2e2e0",
+                    "primary-fixed": "#c4ebdc",
+                    "primary-container": "#00261d",
+                    "tertiary-fixed": "#ffdad8",
+                    "on-secondary": "#ffffff",
+                    "surface-container": "#eeeeec",
+                    "surface": "#faf9f7",
+                    "on-primary": "#ffffff",
+                    "on-secondary-fixed": "#002018"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "md": "16px",
+                    "xs": "4px",
+                    "xl": "48px",
+                    "margin": "32px",
+                    "gutter": "24px",
+                    "sm": "8px",
+                    "lg": "24px",
+                    "unit": "4px"
+            },
+            "fontFamily": {
+                    "ui-label": [
+                            "DM Mono"
+                    ],
+                    "h1": [
+                            "DM Serif Display"
+                    ],
+                    "body-lg": [
+                            "Inter"
+                    ],
+                    "h3": [
+                            "DM Serif Display"
+                    ],
+                    "body-md": [
+                            "Inter"
+                    ],
+                    "h2": [
+                            "DM Serif Display"
+                    ]
+            },
+            "fontSize": {
+                    "ui-label": [
+                            "12px",
+                            {
+                                    "lineHeight": "1.0",
+                                    "letterSpacing": "0.15em",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "h1": [
+                            "48px",
+                            {
+                                    "lineHeight": "1.1",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "1.6",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "h3": [
+                            "24px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "1.5",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "h2": [
+                            "32px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "400"
+                            }
+                    ]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .ghost-border {
+            border: 1px solid rgba(0,0,0,0.06);
+        }
+        .ambient-shadow {
+            box-shadow: 0 4px 24px -4px rgba(0,0,0,0.03), 0 2px 8px -2px rgba(0,0,0,0.02);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col antialiased selection:bg-surface-container-high selection:text-on-background pb-[80px]">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center w-full px-8 h-16 bg-[#f9faf7] dark:bg-[#00261d] font-mono uppercase tracking-widest text-[11px] docked full-width top-0 border-b z-50 border-b border-black/5 dark:border-white/10 flat no shadows text-[#0d3d31] dark:text-[#f9faf7] flex-shrink-0">
+<div class="font-serif font-bold text-xl text-[#0d3d31] dark:text-white">PhysicsNet</div>
+<nav class="hidden md:flex items-center gap-8 h-full">
+<a class="text-stone-500 hover:text-[#0d3d31] transition-colors h-full flex items-center hover:bg-stone-100 dark:hover:bg-white/5 px-4" href="/static/landing.html">Home</a>
+<a class="text-stone-500 hover:text-[#0d3d31] transition-colors h-full flex items-center hover:bg-stone-100 dark:hover:bg-white/5 px-4" href="/">Workspace</a>
+<a class="text-stone-500 hover:text-[#0d3d31] transition-colors h-full flex items-center hover:bg-stone-100 dark:hover:bg-white/5 px-4" href="/static/scenarios.html">Scenarios</a>
+<a class="text-stone-500 hover:text-[#0d3d31] transition-colors h-full flex items-center hover:bg-stone-100 dark:hover:bg-white/5 px-4" href="/static/earthquake.html">Earthquake</a>
+<a class="text-stone-500 hover:text-[#0d3d31] transition-colors h-full flex items-center hover:bg-stone-100 dark:hover:bg-white/5 px-4" href="/static/validation.html">Validation</a>
+<a class="text-[#0d3d31] dark:text-white border-b border-[#0d3d31] pb-1 h-full flex items-center hover:bg-stone-100 dark:hover:bg-white/5 px-4 opacity-80 transition-all" href="/static/explain.html">Explain</a>
+<a class="text-stone-500 hover:text-[#0d3d31] transition-colors h-full flex items-center hover:bg-stone-100 dark:hover:bg-white/5 px-4" href="/static/about.html">About</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="hidden md:flex items-center gap-2 ghost-border px-4 py-2 font-ui-label text-ui-label hover:bg-surface-container-high transition-colors" onclick="window.location.href='/'">
+                Launch Demo
+            </button>
+<button class="flex items-center justify-center w-8 h-8 hover:bg-stone-100 dark:hover:bg-white/5 rounded-DEFAULT transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">code</span>
+</button>
+</div>
+</header>
+<!-- Main Content Area -->
+<div class="flex flex-1 overflow-hidden">
+<!-- Editor Column Layout -->
+<main class="flex-1 overflow-y-auto">
+<article class="max-w-2xl mx-auto px-6 py-xl pb-32">
+<!-- Breadcrumb -->
+<nav class="flex items-center gap-2 mb-8 font-ui-label text-ui-label text-outline">
+<a class="hover:text-primary transition-colors" href="/static/explain.html">EXPLAIN</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-on-background">ARCHITECTURE</span>
+</nav>
+<!-- Header -->
+<header class="mb-xl">
+<h1 class="font-h1 text-h1 text-on-background mb-4">How a neural network learned wave physics.</h1>
+<div class="flex items-center gap-4 text-outline font-ui-label text-ui-label">
+<span>8 min read</span>
+<span class="w-1 h-1 bg-outline rounded-full"></span>
+<span>ARCHITECTURE &amp; THEORY</span>
+</div>
+</header>
+<!-- Article Content -->
+<div class="space-y-xl font-body-lg text-body-lg text-on-surface-variant">
+<section>
+<p class="mb-6">The challenge was not to teach a model to mimic water, but to teach it the fundamental rules of propagation. We needed a system that wouldn't just interpolate between known frames, but extrapolate into unseen boundary conditions based on pure physics.</p>
+</section>
+<!-- Section 1: The Equation -->
+<section>
+<h2 class="font-h2 text-h2 text-on-background mb-6">1. The Governing Equation</h2>
+<p class="mb-8">At the core of our approach is the standard 2D wave equation. Instead of using it to simulate step-by-step, we use it as a penalty. The network must propose a solution, and the equation grades it.</p>
+<div class="bg-surface-container rounded-lg p-12 flex justify-center items-center ambient-shadow ghost-border my-8">
+<span class="font-h3 text-h3 text-primary font-serif tracking-widest">
+                                ∂²u/∂t² = c² · (∂²u/∂x² + ∂²u/∂y²)
+                            </span>
+</div>
+</section>
+<!-- Section 2: Architecture -->
+<section>
+<h2 class="font-h2 text-h2 text-on-background mb-6">2. PINN Architecture</h2>
+<p class="mb-6">We employ a Physics-Informed Neural Network (PINN). The network takes spatial coordinates (x, y) and time (t) as inputs, and predicts the wave amplitude (u). By utilizing automatic differentiation, we can compute the exact derivatives of the network's output with respect to its inputs, allowing us to evaluate the wave equation directly on the network's predictions.</p>
+</section>
+<!-- Section 3: Loss Function -->
+<section>
+<h2 class="font-h2 text-h2 text-on-background mb-6">3. The Loss Function</h2>
+<p class="mb-6">The magic lies in the loss function. It's a composite of data loss (where we have ground truth) and physics loss (where the wave equation must hold true).</p>
+<div class="bg-primary-container text-surface-container-low rounded-lg p-6 font-mono text-sm overflow-x-auto shadow-inner my-8">
+<pre><code>def physics_loss(model, x, y, t, c):
+    u = model(x, y, t)
+    
+    # Compute gradients using autodiff
+    u_t = grad(u, t)
+    u_tt = grad(u_t, t)
+    
+    u_x = grad(u, x)
+    u_xx = grad(u_x, x)
+    
+    u_y = grad(u, y)
+    u_yy = grad(u_y, y)
+    
+    # The PDE residual
+    residual = u_tt - (c**2) * (u_xx + u_yy)
+    
+    return mean_squared_error(residual, 0)</code></pre>
+</div>
+</section>
+<!-- Section 4: Training -->
+<section>
+<h2 class="font-h2 text-h2 text-on-background mb-6">4. Training Dynamics</h2>
+<p class="mb-6">Training requires careful balancing of the loss terms. Early epochs often see the network ignoring physics in favor of matching the data points. As learning rate schedules engage, the physics loss forces the interpolation to adhere strictly to the wave equation, resulting in physically plausible ripples and interference patterns.</p>
+</section>
+<!-- Section 5: Callout -->
+<section class="mt-xl">
+<div class="ghost-border border-l-4 border-l-primary bg-surface p-8 rounded-r-lg">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-primary">info</span>
+<h3 class="font-ui-label text-ui-label text-primary uppercase tracking-widest">Honest Framing</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant m-0">While PINNs offer incredible extrapolation capabilities, they are notoriously difficult to train compared to standard supervised models. Convergence is highly sensitive to the scaling between data loss and physics loss, often requiring dynamic weighting schemes to prevent the gradient of one dominating the other.</p>
+</div>
+</section>
+</div>
+</article>
+</main>
+</div>
+<!-- Footer -->
+<footer class="fixed bottom-0 w-full flex justify-between items-center px-8 py-2 z-40 bg-[#f9faf7] dark:bg-[#00261d] font-mono text-[10px] uppercase tracking-widest docked full-width bottom-0 border-t border-t border-black/5 dark:border-white/10 flat no shadows text-[#0d3d31] dark:text-[#f9faf7]">
+<div class="flex items-center gap-3">
+<span class="w-2 h-2 rounded-full animate-pulse bg-green-500"></span>
+<span class="font-bold">SYSTEM OPERATIONAL</span>
+</div>
+<nav class="flex items-center gap-6">
+<a class="text-stone-500 hover:text-[#0d3d31] dark:hover:text-white transition-colors" href="#">Documentation</a>
+<a class="text-stone-500 hover:text-[#0d3d31] dark:hover:text-white transition-colors" href="#">Support</a>
+<a class="text-stone-500 hover:text-[#0d3d31] dark:hover:text-white transition-colors" href="#">API</a>
+</nav>
+</footer>
+</body></html>
