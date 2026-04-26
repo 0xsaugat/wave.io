@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PhysicsNet Earthquake Simulation</title>
+<title>wave.io Earthquake Simulation</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -733,7 +733,7 @@ input[type="range"]::-moz-range-thumb {
 <div class="app">
   <header class="topbar">
     <div class="brand">
-      <div class="brand-mark">PhysicsNet</div>
+      <div class="brand-mark">wave.io</div>
       <nav class="brand-nav">
         <a href="/static/landing.html">Home</a>
         <a href="/">Workspace</a>
@@ -1750,7 +1750,7 @@ async function runSimulation() {
       data = buildLocalSimulation(payload);
       state.simulationSource = "browser fallback";
       updateSourceChip();
-      $("aiExplanation").textContent = "Backend simulation was unavailable, so PhysicsNet switched to in-browser fallback mode for the earthquake demo.";
+      $("aiExplanation").textContent = "Backend simulation was unavailable, so wave.io switched to in-browser fallback mode for the earthquake demo.";
     } else {
       data = await res.json();
       if (!data || !Array.isArray(data.frames)) {

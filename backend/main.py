@@ -1,5 +1,5 @@
 """
-PhysicsNet Wave backend.
+wave.io backend.
 Serves the frontend and streams a live finite-difference wave simulation.
 """
 import asyncio
@@ -15,7 +15,7 @@ from fastapi.staticfiles import StaticFiles
 from earthquake import router as earthquake_router
 from simulator import WaveSim2D
 
-app = FastAPI(title="PhysicsNet Wave")
+app = FastAPI(title="wave.io")
 app.include_router(earthquake_router)
 
 _FRONTEND = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "frontend"))

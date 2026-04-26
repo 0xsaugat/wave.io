@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PhysicsNet Wave</title>
+<title>wave.io</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -1005,7 +1005,7 @@ input[type="range"]::-moz-range-thumb {
   <div class="app-shell">
     <header class="topbar">
       <div class="brand">
-        <div class="brand-mark">PhysicsNet</div>
+        <div class="brand-mark">wave.io</div>
         <nav class="brand-nav" aria-label="Sections">
           <a href="/static/landing.html">Home</a>
           <a href="/" class="is-active">Workspace</a>
@@ -2734,12 +2734,12 @@ function handlePointerEnd() {
 
 function saveLocalScene() {
   const payload = JSON.parse(decodeURIComponent(escape(atob(encodeScenePayload()))));
-  localStorage.setItem("physicsnet-scene", JSON.stringify(payload));
+  localStorage.setItem("waveio-scene", JSON.stringify(payload));
   document.getElementById("explainCopy").textContent = "Scene saved locally in this browser, including painted barriers, medium zones, and custom sources.";
 }
 
 function loadLocalScene() {
-  const raw = localStorage.getItem("physicsnet-scene");
+  const raw = localStorage.getItem("waveio-scene");
   if (!raw) {
     document.getElementById("explainCopy").textContent = "No saved local scene was found yet.";
     return;

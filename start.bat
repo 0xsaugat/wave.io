@@ -1,9 +1,9 @@
 @echo off
-title PhysicsNet Wave
+title wave.io
 cd /d "%~dp0"
 
 echo.
-echo  PhysicsNet Wave ^| Physics-Informed Neural Network Wave Simulator
+echo  wave.io ^| Physics-Informed Neural Network Wave Simulator
 echo  =================================================================
 echo.
 
