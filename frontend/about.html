@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>About - PhysicsNet</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&amp;family=Inter:wght@400;500&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#2a4d43",
+                        "surface-container-high": "#e8e8e6",
+                        "on-tertiary-container": "#ab7c7b",
+                        "primary-fixed-dim": "#a9cfc1",
+                        "surface-tint": "#42655a",
+                        "on-secondary-container": "#416d5f",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#301213",
+                        "on-tertiary": "#ffffff",
+                        "surface-dim": "#dadad8",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed-variant": "#224e42",
+                        "on-primary-fixed": "#002018",
+                        "error-container": "#ffdad6",
+                        "surface-container-lowest": "#ffffff",
+                        "outline-variant": "#c1c8c4",
+                        "surface-container-low": "#f4f4f1",
+                        "outline": "#717975",
+                        "on-surface-variant": "#414845",
+                        "secondary-fixed-dim": "#a1d0bf",
+                        "tertiary-fixed-dim": "#efb9b8",
+                        "on-primary-container": "#6b8f83",
+                        "on-error-container": "#93000a",
+                        "on-background": "#1a1c1b",
+                        "on-tertiary-fixed-variant": "#633c3c",
+                        "surface-bright": "#faf9f7",
+                        "secondary": "#3a6759",
+                        "secondary-fixed": "#bdeddb",
+                        "secondary-container": "#bdeddb",
+                        "inverse-primary": "#a9cfc1",
+                        "inverse-surface": "#2f3130",
+                        "background": "#faf9f7",
+                        "tertiary-container": "#361717",
+                        "tertiary": "#180203",
+                        "surface-variant": "#e2e2e0",
+                        "primary": "#000c07",
+                        "inverse-on-surface": "#f1f1ef",
+                        "on-surface": "#1a1c1b",
+                        "surface-container-highest": "#e2e2e0",
+                        "primary-fixed": "#c4ebdc",
+                        "primary-container": "#00261d",
+                        "tertiary-fixed": "#ffdad8",
+                        "on-secondary": "#ffffff",
+                        "surface-container": "#eeeeec",
+                        "surface": "#faf9f7",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed": "#002018"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "xs": "4px",
+                        "xl": "48px",
+                        "margin": "32px",
+                        "gutter": "24px",
+                        "sm": "8px",
+                        "lg": "24px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "ui-label": ["DM Mono"],
+                        "h1": ["DM Serif Display"],
+                        "body-lg": ["Inter"],
+                        "h3": ["DM Serif Display"],
+                        "body-md": ["Inter"],
+                        "h2": ["DM Serif Display"]
+                    },
+                    "fontSize": {
+                        "ui-label": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "500"}],
+                        "h1": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "h3": ["24px", {"lineHeight": "1.2", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "h2": ["32px", {"lineHeight": "1.2", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .ghost-border { border: 1px solid rgba(0,0,0,0.06); }
+        .ambient-shadow { box-shadow: 0 4px 24px -4px rgba(0,0,0,0.03); }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-md antialiased pb-[80px]">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center w-full px-8 h-16 bg-[#f9faf7] dark:bg-[#00261d] font-mono uppercase tracking-widest text-[11px] full-width top-0 border-b z-50 border-b border-black/5 dark:border-white/10">
+<div class="font-serif font-bold text-xl text-[#0d3d31] dark:text-white normal-case">PhysicsNet</div>
+<nav class="hidden md:flex gap-6">
+<a class="text-stone-500 hover:text-[#0d3d31] transition-colors hover:bg-stone-100 dark:hover:bg-white/5 px-2 py-1" href="/static/landing.html">Home</a>
+<a class="text-stone-500 hover:text-[#0d3d31] transition-colors hover:bg-stone-100 dark:hover:bg-white/5 px-2 py-1" href="/">Workspace</a>
+<a class="text-stone-500 hover:text-[#0d3d31] transition-colors hover:bg-stone-100 dark:hover:bg-white/5 px-2 py-1" href="/static/scenarios.html">Scenarios</a>
+<a class="text-stone-500 hover:text-[#0d3d31] transition-colors hover:bg-stone-100 dark:hover:bg-white/5 px-2 py-1" href="/static/earthquake.html">Earthquake</a>
+<a class="text-stone-500 hover:text-[#0d3d31] transition-colors hover:bg-stone-100 dark:hover:bg-white/5 px-2 py-1" href="/static/validation.html">Validation</a>
+<a class="text-stone-500 hover:text-[#0d3d31] transition-colors hover:bg-stone-100 dark:hover:bg-white/5 px-2 py-1" href="/static/explain.html">Explain</a>
+<a class="text-[#0d3d31] dark:text-white border-b border-[#0d3d31] pb-1 px-2 py-1" href="/static/about.html">About</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-2 text-stone-500 hover:text-[#0d3d31] transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">code</span>
+</button>
+<button class="bg-[#00261d] text-[#ffffff] px-4 py-2 font-ui-label text-ui-label hover:bg-opacity-90 transition-opacity rounded" onclick="window.location.href='/'">Launch Demo</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow flex justify-center py-xl px-gutter">
+<div class="max-w-[720px] w-full flex flex-col gap-xl">
+<!-- Header Section -->
+<section class="flex flex-col gap-md text-center pt-lg pb-margin">
+<h1 class="font-h1 text-h1 text-primary">Built in 14 days. Validated against the laws of physics.</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-[600px] mx-auto">
+                    We set out to create a highly accurate wave propagation model that doesn't require a supercomputer to run. By relying on fundamental physical axioms rather than brute-force deep learning, PhysicsNet.v1 achieves high-fidelity simulations in a fraction of the computational footprint.
+                </p>
+</section>
+<!-- Honest Pitch Block -->
+<section class="bg-surface-container-low p-margin rounded-lg ghost-border ambient-shadow relative overflow-hidden">
+<div class="absolute -top-6 -left-4 text-surface-dim opacity-20">
+<span class="material-symbols-outlined text-[120px]" style="font-variation-settings: 'FILL' 1;">format_quote</span>
+</div>
+<div class="relative z-10 flex flex-col gap-md pl-md border-l-2 border-outline-variant">
+<p class="font-body-lg text-body-lg text-on-surface italic">
+                        "Most ML models guess the physics based on training data. We encoded the wave equation directly into the architecture. It's not learning the physics; it's constrained by them from the very first epoch."
+                    </p>
+<div class="font-ui-label text-ui-label text-on-surface-variant uppercase">
+                        — Principal Architect, PhysicsNet
+                    </div>
+</div>
+</section>
+<!-- Team Grid -->
+<section class="flex flex-col gap-lg mt-margin">
+<div class="border-b ghost-border pb-sm">
+<h2 class="font-ui-label text-ui-label text-on-surface-variant uppercase tracking-widest">Engineering Core</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Team Card 1 -->
+<div class="flex items-center gap-md p-sm bg-surface rounded-lg ghost-border ambient-shadow">
+<img alt="Avatar" class="w-16 h-16 rounded-full object-cover ghost-border" data-alt="portrait of a man with glasses looking thoughtful in a bright industrial studio setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1ANF9amMPw6TvZTYhqMyXDwWNd5HMFcRKfC38fn0OAooQUMYaKVyNhD-e7AmA40nCjqiQ0SV7laDsfb8VAI0QmSJXFwEjXziFUFevE0i2Im6UdllhHivSWOZ4EE6q5czBPdE6c0oJrxzPrhAxVAwnu_4nblEb5WKiHkttlUbHWrR4m8uH9r3JtIZ4IB_IEEjZHhFg3ZuVmapT9VSKvAHnBb2rL2tIlFtVy6juzzJZNgtRask-3Aez9vbXnNVnEKrH4nx10U6zXcA"/>
+<div class="flex flex-col">
+<h3 class="font-h3 text-h3 text-primary text-[20px]">Dr. Elias Vance</h3>
+<span class="font-ui-label text-ui-label text-on-surface-variant uppercase mt-xs">Lead Physicist</span>
+</div>
+</div>
+<!-- Team Card 2 -->
+<div class="flex items-center gap-md p-sm bg-surface rounded-lg ghost-border ambient-shadow">
+<img alt="Avatar" class="w-16 h-16 rounded-full object-cover ghost-border" data-alt="portrait of a woman with dark hair in a minimal white room with natural side light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmwCck0WqdaRKh0GmbdSeUrX7iBNhjFl37P5bpBkGGqBWI9SyHmLQ_oT8f1Chd3oDavmHu2isPyDy4wdlSVr6pgzu_fWRRGSTeMEFeV-inf1xTUQCNfcsRYUhdtexmfLVQqjOGLz5VnEMrQp5gAO9XMd-beGKUGy8ty0DOZzvPubK8Oyt9j5h7yEtnbfTpDK56PrJmX_aaH1ZA0uTn6lSAdFUNA7lvPbkg6o_3g2Y5SbyD6IIJSXX4VHDMkFE93AfVDIsneUwbMho"/>
+<div class="flex flex-col">
+<h3 class="font-h3 text-h3 text-primary text-[20px]">Sarah Chen</h3>
+<span class="font-ui-label text-ui-label text-on-surface-variant uppercase mt-xs">ML Systems Engineer</span>
+</div>
+</div>
+<!-- Team Card 3 -->
+<div class="flex items-center gap-md p-sm bg-surface rounded-lg ghost-border ambient-shadow">
+<img alt="Avatar" class="w-16 h-16 rounded-full object-cover ghost-border" data-alt="portrait of a younger man in a dark grey shirt against a concrete wall" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKKNO5eHIZiV29If0dO9i0Hiyc6XaLfR3qiYJ1js4yYc3yi12Cpnw_sqmBPiWlQvSbVW6bdabM2r49XhbTHNF91-nAimCR04Mwfl7NMt6oXhwdrTbT3rJZ_ikTxGN-h1NwiGzhFchPT5cAfrLr0y-herkMQjdAsgWdrbvAw5fh2C06y_qmZukfv6mQelBqZj4qvs-JfLJnn30mNkfD72cTggdRaXmoqKrLbH6XKI0xe2v5Nxd4lc9mgQLb_28Aj4JgF7vQGt2-gfU"/>
+<div class="flex flex-col">
+<h3 class="font-h3 text-h3 text-primary text-[20px]">Marcus Thorne</h3>
+<span class="font-ui-label text-ui-label text-on-surface-variant uppercase mt-xs">Data Pipeline Architect</span>
+</div>
+</div>
+<!-- Team Card 4 -->
+<div class="flex items-center gap-md p-sm bg-surface rounded-lg ghost-border ambient-shadow">
+<img alt="Avatar" class="w-16 h-16 rounded-full object-cover ghost-border" data-alt="portrait of a smiling woman in a well lit office environment looking slightly off camera" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-OiQmgUuRZgnaS3VbkCI_YeTmt4KYXvNbcirtFkdIsRfmwU-5imW6flWbJXKmpW6bVnhEWhiOPtcuYxTMS1zkNKT3bjPZuaSGkc9dPYcidxjzlbUBnLzJE-cnT0NJZz9XiTFHhmiW9nJ4jTjqppF00alSdsB-yTk0cke9AH4gX0tlBWN-FdV1-DJLXRUmPZVRUrFU7NR2YUUljpaOqJnYUHohLLIyC1HAJLBhKZzdjCr0gnLKpUcM1hRwUzwjNE91NVI6kBwu_hs"/>
+<div class="flex flex-col">
+<h3 class="font-h3 text-h3 text-primary text-[20px]">Elena Rostova</h3>
+<span class="font-ui-label text-ui-label text-on-surface-variant uppercase mt-xs">Validation Specialist</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Tech Stack Grid -->
+<section class="flex flex-col gap-lg mt-margin mb-xl">
+<div class="border-b ghost-border pb-sm">
+<h2 class="font-ui-label text-ui-label text-on-surface-variant uppercase tracking-widest">Stack Architecture</h2>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-md">
+<div class="flex flex-col items-center justify-center p-md bg-surface-container rounded-lg ghost-border aspect-square gap-sm hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[32px] text-on-surface-variant" style="font-variation-settings: 'FILL' 0;">memory</span>
+<span class="font-ui-label text-ui-label text-on-surface uppercase">PyTorch</span>
+</div>
+<div class="flex flex-col items-center justify-center p-md bg-surface-container rounded-lg ghost-border aspect-square gap-sm hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[32px] text-on-surface-variant" style="font-variation-settings: 'FILL' 0;">database</span>
+<span class="font-ui-label text-ui-label text-on-surface uppercase">JAX</span>
+</div>
+<div class="flex flex-col items-center justify-center p-md bg-surface-container rounded-lg ghost-border aspect-square gap-sm hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[32px] text-on-surface-variant" style="font-variation-settings: 'FILL' 0;">api</span>
+<span class="font-ui-label text-ui-label text-on-surface uppercase">FastAPI</span>
+</div>
+<div class="flex flex-col items-center justify-center p-md bg-surface-container rounded-lg ghost-border aspect-square gap-sm hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[32px] text-on-surface-variant" style="font-variation-settings: 'FILL' 0;">dashboard_customize</span>
+<span class="font-ui-label text-ui-label text-on-surface uppercase">React</span>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer -->
+<footer class="fixed bottom-0 w-full flex justify-between items-center px-8 py-2 z-40 bg-[#f9faf7] dark:bg-[#00261d] font-mono text-[10px] uppercase tracking-widest border-t border-black/5 dark:border-white/10">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full animate-pulse bg-green-500"></span>
+<span class="text-stone-500">SYSTEM OPERATIONAL</span>
+</div>
+<nav class="flex gap-4">
+<a class="text-stone-500 hover:text-[#0d3d31] dark:hover:text-white transition-colors" href="#">Documentation</a>
+<a class="text-stone-500 hover:text-[#0d3d31] dark:hover:text-white transition-colors" href="#">Support</a>
+<a class="text-stone-500 hover:text-[#0d3d31] dark:hover:text-white transition-colors" href="#">API</a>
+</nav>
+</footer>
+</body></html>

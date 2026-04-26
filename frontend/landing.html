@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PhysicsNet - Wave Physics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&amp;family=DM+Serif+Display:ital@0;1&amp;family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary-fixed-variant": "#2a4d43",
+                      "surface-container-high": "#e8e8e6",
+                      "on-tertiary-container": "#ab7c7b",
+                      "primary-fixed-dim": "#a9cfc1",
+                      "surface-tint": "#42655a",
+                      "on-secondary-container": "#416d5f",
+                      "error": "#ba1a1a",
+                      "on-tertiary-fixed": "#301213",
+                      "on-tertiary": "#ffffff",
+                      "surface-dim": "#dadad8",
+                      "on-error": "#ffffff",
+                      "on-secondary-fixed-variant": "#224e42",
+                      "on-primary-fixed": "#002018",
+                      "error-container": "#ffdad6",
+                      "surface-container-lowest": "#ffffff",
+                      "outline-variant": "#c1c8c4",
+                      "surface-container-low": "#f4f4f1",
+                      "outline": "#717975",
+                      "on-surface-variant": "#414845",
+                      "secondary-fixed-dim": "#a1d0bf",
+                      "tertiary-fixed-dim": "#efb9b8",
+                      "on-primary-container": "#6b8f83",
+                      "on-error-container": "#93000a",
+                      "on-background": "#1a1c1b",
+                      "on-tertiary-fixed-variant": "#633c3c",
+                      "surface-bright": "#faf9f7",
+                      "secondary": "#3a6759",
+                      "secondary-fixed": "#bdeddb",
+                      "secondary-container": "#bdeddb",
+                      "inverse-primary": "#a9cfc1",
+                      "inverse-surface": "#2f3130",
+                      "background": "#faf9f7",
+                      "tertiary-container": "#361717",
+                      "tertiary": "#180203",
+                      "surface-variant": "#e2e2e0",
+                      "primary": "#000c07",
+                      "inverse-on-surface": "#f1f1ef",
+                      "on-surface": "#1a1c1b",
+                      "surface-container-highest": "#e2e2e0",
+                      "primary-fixed": "#c4ebdc",
+                      "primary-container": "#00261d",
+                      "tertiary-fixed": "#ffdad8",
+                      "on-secondary": "#ffffff",
+                      "surface-container": "#eeeeec",
+                      "surface": "#faf9f7",
+                      "on-primary": "#ffffff",
+                      "on-secondary-fixed": "#002018"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "md": "16px",
+                      "xs": "4px",
+                      "xl": "48px",
+                      "margin": "32px",
+                      "gutter": "24px",
+                      "sm": "8px",
+                      "lg": "24px",
+                      "unit": "4px"
+              },
+              "fontFamily": {
+                      "ui-label": [
+                              "DM Mono"
+                      ],
+                      "h1": [
+                              "DM Serif Display"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "h3": [
+                              "DM Serif Display"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "h2": [
+                              "DM Serif Display"
+                      ]
+              },
+              "fontSize": {
+                      "ui-label": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "letterSpacing": "0.15em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "h1": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "h3": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "h2": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen flex flex-col antialiased selection:bg-primary-container selection:text-white">
+<!-- TopAppBar from JSON -->
+<header class="bg-[#f9faf7] dark:bg-[#00261d] w-full top-0 z-50 border-b border-black/5 dark:border-white/10 sticky flex justify-between items-center px-8 h-16">
+<div class="flex items-center gap-8">
+<span class="font-serif font-bold text-xl text-[#0d3d31] dark:text-white">PhysicsNet</span>
+<nav class="hidden md:flex items-center gap-6">
+<a class="font-mono uppercase tracking-widest text-[11px] text-[#0d3d31] dark:text-white border-b border-[#0d3d31] pb-1 opacity-80 transition-all py-2 px-1" href="/static/landing.html">Home</a>
+<a class="font-mono uppercase tracking-widest text-[11px] text-stone-500 hover:text-[#0d3d31] transition-colors hover:bg-stone-100 dark:hover:bg-white/5 py-2 px-1" href="/">Workspace</a>
+<a class="font-mono uppercase tracking-widest text-[11px] text-stone-500 hover:text-[#0d3d31] transition-colors hover:bg-stone-100 dark:hover:bg-white/5 py-2 px-1" href="/static/scenarios.html">Scenarios</a>
+<a class="font-mono uppercase tracking-widest text-[11px] text-stone-500 hover:text-[#0d3d31] transition-colors hover:bg-stone-100 dark:hover:bg-white/5 py-2 px-1" href="/static/earthquake.html">Earthquake</a>
+<a class="font-mono uppercase tracking-widest text-[11px] text-stone-500 hover:text-[#0d3d31] transition-colors hover:bg-stone-100 dark:hover:bg-white/5 py-2 px-1" href="/static/validation.html">Validation</a>
+<a class="font-mono uppercase tracking-widest text-[11px] text-stone-500 hover:text-[#0d3d31] transition-colors hover:bg-stone-100 dark:hover:bg-white/5 py-2 px-1" href="/static/explain.html">Explain</a>
+<a class="font-mono uppercase tracking-widest text-[11px] text-stone-500 hover:text-[#0d3d31] transition-colors hover:bg-stone-100 dark:hover:bg-white/5 py-2 px-1" href="/static/about.html">About</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button aria-label="Code" class="font-ui-label text-ui-label text-stone-500 hover:text-[#0d3d31] transition-colors flex items-center justify-center p-2 rounded-DEFAULT hover:bg-stone-100">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">code</span>
+</button>
+<button class="bg-[#00261d] text-[#ffffff] font-ui-label text-ui-label px-4 py-2 rounded-DEFAULT hover:opacity-90 transition-opacity" onclick="window.location.href='/'">
+Launch Demo
+            </button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow flex flex-col md:flex-row w-full max-w-[1440px] mx-auto pb-16">
+<!-- Left Column: Editorial/Hero -->
+<section class="w-full md:w-[55%] flex flex-col justify-center px-8 md:px-16 lg:px-24 py-16 lg:py-24 space-y-8">
+<div class="space-y-4">
+<p class="font-ui-label text-ui-label text-on-surface-variant uppercase tracking-widest">
+                    PHYSICS-INFORMED NEURAL NETWORK · 2026
+                </p>
+<h1 class="font-h1 text-h1 text-on-surface leading-tight">
+                    Wave physics, learned from one equation.
+                </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl">
+                    PhysicsNet constrains deep learning with the fundamental wave equation, enabling generalization across unobserved boundaries and heterogeneous media without requiring massive paired datasets.
+                </p>
+</div>
+<div class="flex flex-wrap items-center gap-4 pt-4">
+<button class="bg-[#00261d] text-[#ffffff] font-ui-label text-ui-label px-6 py-3 rounded-DEFAULT hover:opacity-90 transition-opacity">
+<span onclick="window.location.href='/'">Launch Workspace</span>
+                </button>
+<button class="border border-black/10 text-on-surface font-ui-label text-ui-label px-6 py-3 rounded-DEFAULT hover:bg-surface-container transition-colors bg-surface">
+                    Read the Explanation
+                </button>
+</div>
+<div class="pt-12 border-t border-black/5 flex flex-wrap gap-x-12 gap-y-4">
+<div class="flex flex-col gap-1">
+<span class="font-ui-label text-ui-label text-on-surface-variant">PHASE</span>
+<span class="font-body-md text-body-md text-on-surface">Alpha-7</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-ui-label text-ui-label text-on-surface-variant">MODELS</span>
+<span class="font-body-md text-body-md text-on-surface">5 scenarios</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-ui-label text-ui-label text-on-surface-variant">VALIDATED</span>
+<span class="font-body-md text-body-md text-on-surface">L2 &lt; 3%</span>
+</div>
+</div>
+</section>
+<!-- Right Column: Visual/Canvas representation -->
+<section class="w-full md:w-[45%] bg-surface-container-low min-h-[512px] md:min-h-full border-l border-black/5 relative overflow-hidden flex items-center justify-center p-8">
+<!-- Simulated 3D/Wireframe Canvas Area -->
+<div class="w-full aspect-square max-w-[500px] relative">
+<!-- Decorative grid background -->
+<div class="absolute inset-0 bg-[linear-gradient(to_right,#0000000a_1px,transparent_1px),linear-gradient(to_bottom,#0000000a_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+<!-- Abstract wave visualization graphic placeholder -->
+<img alt="Abstract technical representation of a wireframe mesh surface resembling wave propagation on a neutral background" class="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-multiply border border-black/5 rounded-lg shadow-[0_4px_24px_rgba(0,0,0,0.02)]" data-alt="Abstract minimalist wireframe grid showing a wave propagation pattern in subtle dark teal lines on a light beige background, reminiscent of an engineering schematic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNdRG2yuVlyPnK-J2G-DEE4gkm73hIeznhsLb3RvA_1yxlKadMr__lYQZmmxfWDGLtxj13DKIy8EgiiEbW2ECuyXEDa6wR2wX6bfaUd3BibR6WO13XUH_5EgJkiIJ4Xw0t7JrWOlzUxZtlBkWrheK5cloCSF_I_S4UyxUcZzY_hOJ-Rfzu3x9PQmkUk19Rt2j8w7jaElWVWLRIOwIlnDhY219NhNrLvD3FOtdpyYnqESdJDvVXvl4Db9F7wBkfn0WMH2LgKImmGEU"/>
+<!-- Floating Data Labels -->
+<div class="absolute top-[20%] right-[10%] bg-surface border border-black/5 px-2 py-1 rounded-DEFAULT shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
+<span class="font-ui-label text-[10px] text-on-surface tracking-wider">NODE_01_ACTIVE</span>
+</div>
+<div class="absolute bottom-[30%] left-[15%] bg-surface border border-black/5 px-2 py-1 rounded-DEFAULT shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
+<span class="font-ui-label text-[10px] text-on-surface tracking-wider">VEL_FIELD_04</span>
+</div>
+<div class="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 bg-surface/80 backdrop-blur-sm border border-black/5 px-3 py-1.5 rounded-DEFAULT">
+<span class="font-ui-label text-[11px] text-primary-container font-bold tracking-widest">t = 0.42s</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer from JSON -->
+<footer class="bg-[#f9faf7] dark:bg-[#00261d] w-full flex justify-between items-center px-8 py-2 z-40 border-t border-black/5 dark:border-white/10 mt-auto">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full animate-pulse bg-green-500"></span>
+<span class="font-mono text-[10px] uppercase tracking-widest text-[#0d3d31] font-bold">SYSTEM OPERATIONAL</span>
+</div>
+<nav class="flex gap-4">
+<a class="font-mono text-[10px] uppercase tracking-widest text-stone-500 hover:text-[#0d3d31] dark:hover:text-white transition-colors" href="#">Documentation</a>
+<a class="font-mono text-[10px] uppercase tracking-widest text-stone-500 hover:text-[#0d3d31] dark:hover:text-white transition-colors" href="#">Support</a>
+<a class="font-mono text-[10px] uppercase tracking-widest text-stone-500 hover:text-[#0d3d31] dark:hover:text-white transition-colors" href="#">API</a>
+</nav>
+</footer>
+</body></html>
